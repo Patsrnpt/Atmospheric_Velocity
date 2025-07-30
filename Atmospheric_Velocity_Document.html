@@ -1,0 +1,1693 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Estimating Atmospheric Wind Speed Using Cross-Correlation Analysis &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Atmospheric_Velocity_Document';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Markdown Files" href="markdown.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    Estimating Atmospheric Wind Speed Using Cross-Correlation Analysis
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="markdown.html">Markdown Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Content with notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FAtmospheric_Velocity_Document.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Atmospheric_Velocity_Document.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Estimating Atmospheric Wind Speed Using Cross-Correlation Analysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-correlation-function">Cross-Correlation Function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-numpy-package">Using the NumPy Package</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-scipy-package">Using the SciPy Package</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-correlation-of-two-uncorrelated-noise-signals">Cross-Correlation of Two Uncorrelated Noise Signals</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-correlation-of-two-shifted-signals">Cross-Correlation of Two Shifted Signals</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-correlation-of-realistic-spectral-lines-atmospheric-composition-detection">Cross-Correlation of Realistic Spectral Lines (Atmospheric Composition Detection)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-resolution-spectroscopy">High-Resolution Spectroscopy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#separating-the-planet-s-signal">Separating the Planet’s Signal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-spectral-resolution-of-the-planet-s-signal">Estimating the Spectral Resolution of the Planet’s Signal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-the-original-resolution">Calculating the Original Resolution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#input-parameters">Input Parameters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-function-works">How the Function Works</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-detrending">Resolution Detrending</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Input Parameters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">How the Function Works</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wind-speed-measurement">Wind Speed Measurement</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-doppler-off-vs-doppler-on-spectra">Plotting the Doppler Off vs. Doppler On Spectra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-wind-speed-via-cross-correlation">Measuring Wind Speed via Cross-Correlation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#inputs">Inputs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">How the Function Works</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-wind-speed-at-full-resolution">Estimating Wind Speed at Full Resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-instrument-resolution-on-wind-speed-measurement">Effect of Instrument Resolution on Wind Speed Measurement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-vs-wind-speed-measurement-accuracy">Resolution vs. Wind Speed Measurement Accuracy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-of-tutorial">End of Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="estimating-atmospheric-wind-speed-using-cross-correlation-analysis">
+<h1>Estimating Atmospheric Wind Speed Using Cross-Correlation Analysis<a class="headerlink" href="#estimating-atmospheric-wind-speed-using-cross-correlation-analysis" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Understand the concept and mathematical foundation of the cross-correlation function.</p></li>
+<li><p>Learn how to compute cross-correlation using both NumPy and SciPy libraries.</p></li>
+<li><p>Analyze cross-correlation with noise signals and shifted signals to build intuition.</p></li>
+<li><p>Apply cross-correlation techniques to detect atmospheric compositions from realistic spectral lines.</p></li>
+<li><p>Grasp the principles of high-resolution spectroscopy for exoplanet atmosphere analysis.</p></li>
+<li><p>Learn how to separate the planet’s signal from combined spectra.</p></li>
+<li><p>Calculate and interpret the spectral resolving power of observed planetary spectra.</p></li>
+<li><p>Perform spectral resolution detrending to match instrument capabilities.</p></li>
+<li><p>Use cross-correlation to measure horizontal wind speeds in exoplanet atmospheres.</p></li>
+<li><p>Evaluate the effect of instrumental spectral resolution on wind speed measurement accuracy.</p></li>
+<li><p>Visualize how resolution impacts the reliability of atmospheric wind speed estimates.</p></li>
+</ul>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Introduction</p></li>
+<li><p>Imports</p></li>
+<li><p>Cross-Correlation Function</p>
+<ul>
+<li><p>Using the NumPy Package</p></li>
+<li><p>Using the SciPy Package</p></li>
+<li><p>Cross-Correlation of Two Uncorrelated Noise Signals</p></li>
+<li><p>Cross-Correlation of Two Shifted Signals</p></li>
+<li><p>Cross-Correlation of Realistic Spectral Lines (Atmospheric Composition Detection)</p></li>
+</ul>
+</li>
+<li><p>High-Resolution Spectroscopy</p>
+<ul>
+<li><p>Separating the Planet’s Signal</p></li>
+<li><p>Estimating the Spectral Resolution of the Planet’s Signal</p></li>
+<li><p>Calculating the Original Resolution</p>
+<ul>
+<li><p>Input Parameters</p></li>
+<li><p>How the Function Works</p></li>
+</ul>
+</li>
+<li><p>Resolution Detrending</p>
+<ul>
+<li><p>Input Parameters</p></li>
+<li><p>How the Function Works</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Wind Speed Measurement</p>
+<ul>
+<li><p>Plotting the Doppler Off vs. Doppler On Spectra</p></li>
+<li><p>Measuring Wind Speed via Cross-Correlation</p>
+<ul>
+<li><p>Input Parameters</p></li>
+<li><p>How the Function Works</p></li>
+</ul>
+</li>
+<li><p>Estimating Wind Speed at Full Resolution</p></li>
+<li><p>Effect of Instrument Resolution on Wind Speed Measurement</p></li>
+<li><p>Resolution vs. Wind Speed Measurement Accuracy</p></li>
+</ul>
+</li>
+<li><p>End of Tutorial</p></li>
+<li><p>References</p></li>
+<li><p>About this Notebook</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In recent years, the study of planets outside our solar system has grown quickly. One of the best ways to learn about these planets is by looking at their atmospheres using high-resolution spectroscopy (Birkby, 2018). This technique breaks light into many tiny parts so we can see details that would otherwise be hidden. Finding the planet’s signal is not easy. The light from the star it orbits is much stronger, and Earth’s atmosphere can also get in the way. To solve this, scientists use a method called cross-correlation. This method helps pick out the planet’s unique signals by matching patterns in the data. Besides knowing what the atmosphere is made of, we also want to understand how winds and weather work on these planets. By studying small shifts in the light caused by movement, we can measure wind speeds and rotation (Birkby, 2018). This tells us more about the planet’s climate. In this tutorial, you will learn how to use cross-correlation and high-resolution spectroscopy to find these signals and measure wind speeds. You will also see how the quality of the instruments affects what we can learn. This tutorial is made for anyone interested in exploring exoplanet atmospheres. By the end, you will have a good understanding of how scientists study these distant worlds.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>The main packages and their use-cases in this tutorial are as follows:</p>
+<ul class="simple">
+<li><p>numpy: to handle array functions and numerical operations</p></li>
+<li><p>matplotlib.pyplot: for plotting data and creating visualizations</p></li>
+<li><p>scipy.interpolate.interp1d, splev, and splrep: for interpolation and spline fitting</p></li>
+<li><p>scipy.ndimage: for applying convolution and image processing functions</p></li>
+<li><p>pandas: to load and manage tabular data</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">splev</span><span class="p">,</span> <span class="n">splrep</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cross-correlation-function">
+<h2>Cross-Correlation Function<a class="headerlink" href="#cross-correlation-function" title="Link to this heading">#</a></h2>
+<p>The cross-correlation function is a powerful technique used to extract information from noisy or low signal-to-noise observations by evaluating the similarity between two spectra. In exoplanet atmospheric studies, it is especially useful for recovering transmission spectra that cannot be directly resolved. Following the approach outlined in Kempton et al. (2014), the observed spectrum is cross-correlated against a template, typically a model spectrum of the same system. A distinct peak in the cross-correlation function indicates the presence of matching spectral features, thereby revealing the atmospheric composition. To simulate what is observationally accessible, Kempton et al. cross-correlated Doppler-shifted transmission models against their unshifted counterparts. The position of the peak in velocity space reflects the net line-of-sight (LOS) velocity, allowing estimation of wind speeds in the planet’s upper atmosphere. Thus, both molecular detection and wind measurements are made possible through this cross-correlation framework, even when direct spectral retrieval is limited.</p>
+<section id="using-the-numpy-package">
+<h3>Using the NumPy Package<a class="headerlink" href="#using-the-numpy-package" title="Link to this heading">#</a></h3>
+<p>To begin with a simple example, we can use the numpy library to calculate the cross-correlation between two signals. This serves as a straightforward introduction before moving on to more complex or realistic datasets. The basic syntax for NumPy’s correlate function is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">data_1</span><span class="p">,</span> <span class="n">data_2</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">data_1</span><span class="p">,</span> <span class="n">data_2</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+<span class="ne">NameError</span>: name &#39;data_1&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, data_1 and data_2 are array-like inputs representing the two signals to be compared. The mode parameter determines how the overlap between the arrays is treated. The available modes are:</p>
+<ul class="simple">
+<li><p>‘valid’: Returns only those parts of the correlation where the signals completely overlap, with no zero-padding. The result length is max(0, len(a) - len(b) + 1) when len(a) ≥ len(b). This mode gives the “pure” correlation.</p></li>
+<li><p>‘same’: Produces output of the same length as data_1, centered. Zero-padding is applied as necessary.</p></li>
+<li><p>‘full’: Computes the full cross-correlation, including all partial overlaps. The result length is len(a) + len(b) - 1.</p></li>
+</ul>
+<p>For further details, refer to the NumPy documentation: <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.correlate.html">https://numpy.org/devdocs/reference/generated/numpy.correlate.html</a></p>
+</section>
+<section id="using-the-scipy-package">
+<h3>Using the SciPy Package<a class="headerlink" href="#using-the-scipy-package" title="Link to this heading">#</a></h3>
+<p>When working with higher-dimensional data (e.g., 2D or 3D arrays), NumPy’s correlate function is not sufficient. In such cases, you can use scipy.signal.correlate.  First, import the required module:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then, compute the cross-correlation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">signal</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">data_1</span><span class="p">,</span> <span class="n">data_2</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, data_1 and data_2 must have the same number of dimensions.</p>
+<p>Supported mode options:</p>
+<ul class="simple">
+<li><p>‘valid’: Returns results only where full overlap occurs.</p></li>
+<li><p>‘same’: Returns an output with the same shape as data_1.</p></li>
+<li><p>‘full’: Returns the complete correlation including partial overlaps (default).</p></li>
+</ul>
+<p>Additionally, SciPy offers a method parameter:</p>
+<ul class="simple">
+<li><p>‘direct’: Computes the correlation using the direct mathematical formula.</p></li>
+<li><p>‘fft’: Uses the Fast Fourier Transform for faster computation.</p></li>
+<li><p>‘auto’: Automatically selects the faster method (default).</p></li>
+</ul>
+<p>The output is an array with the same number of dimensions as the inputs, containing the cross-correlation values. For more information, visit the SciPy documentation: <a class="reference external" href="https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.signal.correlate.html">https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.signal.correlate.html</a></p>
+<p>Now that we’ve reviewed how to perform cross-correlation using both NumPy and SciPy, let’s move on to an example using NumPy for simplicity.</p>
+</section>
+<section id="cross-correlation-of-two-uncorrelated-noise-signals">
+<h3>Cross-Correlation of Two Uncorrelated Noise Signals<a class="headerlink" href="#cross-correlation-of-two-uncorrelated-noise-signals" title="Link to this heading">#</a></h3>
+<p>The following example shows the cross-correlation between two random Gaussian noise signals, s1 and s2. Since the signals are purely random and uncorrelated, we expect no significant peak in the cross-correlation function. This serves as a baseline demonstration that cross-correlation does not produce artificial signals when no real correlation exists.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate independent random noise</span>
+<span class="n">noise_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">noise_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+
+<span class="c1"># remove mean to prevent DC offset</span>
+<span class="n">noise_1</span> <span class="o">=</span> <span class="n">noise_1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">noise_1</span><span class="p">)</span>
+<span class="n">noise_2</span> <span class="o">=</span> <span class="n">noise_2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">noise_2</span><span class="p">)</span>
+
+<span class="c1"># plot the figure of two different noises</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">noise_1</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Noise 1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">noise_2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Noise 2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Comparison of Two Random Noise Signals)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cross correlation</span>
+<span class="n">ccf_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">noise_1</span><span class="p">,</span> <span class="n">noise_2</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;full&#39;</span><span class="p">)</span>
+<span class="n">normalized_ccf_noise</span> <span class="o">=</span> <span class="n">ccf_noise</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ccf_noise</span><span class="p">))</span>
+
+<span class="c1"># define lag axis</span>
+<span class="n">lags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">noise_1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">noise_1</span><span class="p">))</span>
+
+<span class="c1"># find peak</span>
+<span class="n">peak_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">normalized_ccf_noise</span><span class="p">)</span>
+<span class="n">peak_lag</span> <span class="o">=</span> <span class="n">lags</span><span class="p">[</span><span class="n">peak_index</span><span class="p">]</span>
+
+<span class="c1"># plot cross-correlation</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lags</span><span class="p">,</span> <span class="n">normalized_ccf_noise</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">peak_lag</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Peak at lag </span><span class="si">{</span><span class="n">peak_lag</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cross-Correlation of Two Uncorrelated Noise Signals&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Lag&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, the plot does not show any strong peak. The correlation values fluctuate around zero, indicating no systematic alignment between the two signals. This result confirms that the cross-correlation function is sensitive to genuine similarity and does not produce false positives when signals are unrelated.</p>
+</section>
+<section id="cross-correlation-of-two-shifted-signals">
+<h3>Cross-Correlation of Two Shifted Signals<a class="headerlink" href="#cross-correlation-of-two-shifted-signals" title="Link to this heading">#</a></h3>
+<p>Let’s try something more realistic. In the atmosphere of an exoplanet, various chemical species such as carbon monoxide, water vapor, and sodium leave distinctive spectral signatures. Some species absorb light, forming dark absorption lines on a continuous spectrum; others emit light, producing bright emission lines on a dark background. The combined spectrum we receive from an exoplanet reflects this complex mixture. Since we’re focusing on exoplanets, here are several molecular and atomic features commonly observed using cross-correlation techniques:</p>
+<ul class="simple">
+<li><p>CO (Carbon Monoxide): strong absorption near 1.4 µm, observed in hot Jupiter spectra from HST WFC3 (Ranjan et al., 2014).</p></li>
+<li><p>H₂O (Water Vapor): has a major absorption band near 1.4 µm, observed in transmission and emission spectra of hot Jupiters using HST WFC3 (Ranjan et al., 2014).</p></li>
+<li><p>CH₄ (Methane): dominant band at 3.3 µm, with additional features near 1.6 µm and 2.3 µm; the 3.3 µm band is particularly strong in warm exoplanets (Fortney et al., 2020).</p></li>
+<li><p>Na I (Neutral Sodium): two narrow D-lines at 589.0 nm and 589.6 nm, commonly seen in transmission spectra (Ahrer et al., 2022).</p></li>
+<li><p>CO₂ (Carbon Dioxide): strong bands near 4.3 µm and 15 µm; absorption strength depends on pressure and abundance (Wei et al., 2018).</p></li>
+<li><p>HCN (Hydrogen Cyanide): broad absorption near 3 µm, often seen in carbon-rich atmospheres (Harris et al., 2006).</p></li>
+</ul>
+<p>In our simulation, we combine the spectral signatures of these species with random noise to replicate a realistic exoplanet signal. This allows us to demonstrate how cross-correlation techniques can recover individual species, even in noisy observational data. For simplicity, each spectral line is represented by a Gaussian centered at its characteristic wavelength.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define gaussian behavior for the spectral features</span>
+<span class="k">def</span> <span class="nf">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">c</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># define wavelength grid</span>
+<span class="n">wl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>  <span class="c1"># in microns</span>
+
+<span class="c1"># spectral species with reduced wavelengths to avoid clutter</span>
+<span class="n">species_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;CO&quot;</span><span class="p">,</span>   <span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">4.6</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;H₂O&quot;</span><span class="p">,</span>  <span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.4</span><span class="p">]},</span>   
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;CH₄&quot;</span><span class="p">,</span>  <span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.6</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">]},</span>   
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Na I&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5896</span><span class="p">]},</span>             
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;CO₂&quot;</span><span class="p">,</span>  <span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">4.3</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;HCN&quot;</span><span class="p">,</span>  <span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">]}</span>
+<span class="p">]</span>
+
+<span class="c1"># initialize clean flux spectrum</span>
+<span class="n">flux_clean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">wl</span><span class="p">)</span>
+
+<span class="c1"># add gaussian emission lines</span>
+<span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">species_list</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line_wl</span> <span class="ow">in</span> <span class="n">species</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="mf">0.1</span> <span class="o">&lt;=</span> <span class="n">line_wl</span> <span class="o">&lt;=</span> <span class="mf">18.0</span><span class="p">:</span>
+            <span class="n">amp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>      <span class="c1"># line strength</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># line width</span>
+            <span class="n">flux_clean</span> <span class="o">+=</span> <span class="n">gaussian</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">wl</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">amp</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">line_wl</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
+
+<span class="c1"># add random gaussian noise</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">wl</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">flux_noisy</span> <span class="o">=</span> <span class="n">flux_clean</span> <span class="o">+</span> <span class="n">noise</span>
+
+<span class="c1"># plot the spectrum</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span> <span class="n">flux_noisy</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;simulated spectrum with noise&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span> <span class="n">flux_clean</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;clean emission lines&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
+
+<span class="n">max_flux</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">flux_clean</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.2</span>  <span class="c1"># y position for labels above plot</span>
+
+<span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">species_list</span><span class="p">:</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span>
+    <span class="k">for</span> <span class="n">line_wl</span> <span class="ow">in</span> <span class="n">species</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="mf">0.1</span> <span class="o">&lt;=</span> <span class="n">line_wl</span> <span class="o">&lt;=</span> <span class="mf">18.0</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">wl</span> <span class="o">-</span> <span class="n">line_wl</span><span class="p">)</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+            <span class="n">peak_flux</span> <span class="o">=</span> <span class="n">flux_clean</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            
+            <span class="c1"># plot marker at peak</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">peak_flux</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">color</span><span class="p">,</span> <span class="n">markersize</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
+            
+            <span class="c1"># draw faint dashed vertical line</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">line_wl</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">)</span>
+            
+            <span class="c1"># place text label above plot near the dashed line</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">line_wl</span><span class="p">,</span> <span class="n">max_flux</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">,</span>
+                     <span class="n">species</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                     <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span>
+                     <span class="n">color</span> <span class="o">=</span> <span class="n">color</span><span class="p">,</span>
+                     <span class="n">rotation</span> <span class="o">=</span> <span class="mi">90</span><span class="p">,</span>
+                     <span class="n">va</span> <span class="o">=</span> <span class="s1">&#39;bottom&#39;</span><span class="p">,</span>
+                     <span class="n">ha</span> <span class="o">=</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                     <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">bottom</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">flux_noisy</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">max_flux</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;wavelength (µm)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;flux&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Simulated exoplanet emission spectrum with molecular and atomic features&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This simulated spectrum is simplified and idealized. Real observational data is often more complex and noisier, affected by factors such as the interstellar medium (ISM) and instrumental noise. However, this example clearly shows the fundamental concept of how cross-correlation can be used to identify spectral features. Next, let’s map this spectral data onto a time array grid and apply cross-correlation to detect the presence and shifts of these spectral signals.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># parameters</span>
+<span class="n">t_signal</span> <span class="o">=</span> <span class="mi">10</span>                 <span class="c1"># duration of each signal (arbitrary unit)</span>
+<span class="n">t_shift</span> <span class="o">=</span> <span class="mi">5</span>                   <span class="c1"># time gap (shift) between signals (arbitrary unit)</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wl</span><span class="p">)</span>                  <span class="c1"># number of samples per signal</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">t_signal</span> <span class="o">/</span> <span class="n">fs</span>            <span class="c1"># time resolution per sample</span>
+
+<span class="c1"># total duration to hold both signals plus gap</span>
+<span class="n">total_duration</span> <span class="o">=</span> <span class="n">t_signal</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">t_shift</span>  
+<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_duration</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_duration</span> <span class="o">/</span> <span class="n">dt</span><span class="p">))</span>  <span class="c1"># full time array</span>
+
+<span class="c1"># signal 1: original flux_noisy placed from t=0 to t_signal</span>
+<span class="n">signal1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="n">signal1</span><span class="p">[:</span><span class="n">fs</span><span class="p">]</span> <span class="o">=</span> <span class="n">flux_noisy</span>
+
+<span class="c1"># generate signal 2 with different amplitude and width</span>
+<span class="n">flux_clean_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">wl</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">species_list</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line_wl</span> <span class="ow">in</span> <span class="n">species</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]:</span>
+        <span class="n">amp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+        <span class="n">flux_clean_2</span> <span class="o">+=</span> <span class="n">gaussian</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span> <span class="n">amp</span><span class="p">,</span> <span class="n">line_wl</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+
+<span class="n">noise_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">wl</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">flux_noisy_2</span> <span class="o">=</span> <span class="n">flux_clean_2</span> <span class="o">+</span> <span class="n">noise_2</span>
+
+<span class="c1"># length of gap in samples</span>
+<span class="n">gap_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t_shift</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
+
+<span class="c1"># define signal2 placed with time_shift</span>
+<span class="n">signal2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="n">start_idx</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">+</span> <span class="n">gap_samples</span>  <span class="c1"># start of signal2 after signal1 and gap</span>
+<span class="n">signal2</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">start_idx</span> <span class="o">+</span> <span class="n">fs</span><span class="p">]</span> <span class="o">=</span> <span class="n">flux_noisy_2</span>
+
+<span class="c1"># initialize combined signal array</span>
+<span class="n">combined_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+
+<span class="c1"># put signal 1 in place</span>
+<span class="n">combined_signal</span><span class="p">[:</span><span class="n">fs</span><span class="p">]</span> <span class="o">=</span> <span class="n">flux_noisy</span>
+
+<span class="c1"># put noise in the gap</span>
+<span class="n">noise_gap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">gap_samples</span><span class="p">)</span>
+<span class="n">combined_signal</span><span class="p">[</span><span class="n">fs</span><span class="p">:</span><span class="n">fs</span> <span class="o">+</span> <span class="n">gap_samples</span><span class="p">]</span> <span class="o">=</span> <span class="n">noise_gap</span>
+
+<span class="c1"># put signal 2 in place</span>
+<span class="n">combined_signal</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">start_idx</span> <span class="o">+</span> <span class="n">fs</span><span class="p">]</span> <span class="o">=</span> <span class="n">flux_noisy_2</span>
+
+<span class="c1"># plot combined signal</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">combined_signal</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (arbitrary unit)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Signal amplitude&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Spectral signals vs time with adjustable time_shift&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cross-correlation</span>
+<span class="n">ccf_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">signal2</span><span class="p">,</span> <span class="n">signal1</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;full&#39;</span><span class="p">)</span>
+<span class="n">normalized_ccf_signal</span> <span class="o">=</span> <span class="n">ccf_signal</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ccf_signal</span><span class="p">))</span>
+
+<span class="c1"># define lag axis in samples</span>
+<span class="n">lags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">signal1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal1</span><span class="p">))</span>
+
+<span class="c1"># convert lag to time units</span>
+<span class="n">lags_time</span> <span class="o">=</span> <span class="n">lags</span> <span class="o">*</span> <span class="n">dt</span>
+
+<span class="c1"># find peak index and corresponding lag time</span>
+<span class="n">peak_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">normalized_ccf_signal</span><span class="p">)</span>
+<span class="n">peak_lag_time</span> <span class="o">=</span> <span class="n">lags_time</span><span class="p">[</span><span class="n">peak_index</span><span class="p">]</span>
+
+<span class="c1"># plot cross-correlation</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lags_time</span><span class="p">,</span> <span class="n">normalized_ccf_signal</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">peak_lag_time</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Peak lag = </span><span class="si">{</span><span class="n">peak_lag_time</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> units&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cross-Correlation of Two Spectral Signals&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Lag Time (arbitrary units)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">window</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">signal1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+<span class="n">x_min</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">peak_lag_time</span> <span class="o">-</span> <span class="n">window</span><span class="p">,</span> <span class="n">lags_time</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">x_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">peak_lag_time</span> <span class="o">+</span> <span class="n">window</span><span class="p">,</span> <span class="n">lags_time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the CCF plot above, we see that the normalized cross-correlation peaks at t = 15. This means the two signals are shifted relative to each other by 15 time units. This result matches the time values we assigned earlier: a signal duration of 10 units plus a time gap of 5 units, summing to 15 units total. You can experiment with these time values yourself; the peak lag will always correspond to the combined duration of the signal and the gap between signals. Moreover, the cross-correlation produces a clear peak even when the amplitudes of the two signals are not the same. This highlights one of the strengths of cross-correlation: it focuses on the similarity of patterns rather than their absolute magnitudes. This makes it a powerful technique when signals are noisy, partially missing, or scaled differently, which is often the case in real observational data.</p>
+</section>
+<section id="cross-correlation-of-realistic-spectral-lines-atmospheric-composition-detection">
+<h3>Cross-Correlation of Realistic Spectral Lines (Atmospheric Composition Detection)<a class="headerlink" href="#cross-correlation-of-realistic-spectral-lines-atmospheric-composition-detection" title="Link to this heading">#</a></h3>
+<p>In exoplanet research, cross-correlation is commonly used to detect molecular signatures in planetary atmospheres. By comparing the observed spectrum to high-resolution template spectra of molecules such as H₂O, CH₄, CO, or Na I, we can identify which species are present, even when the signals are weak or noisy. Let’s now apply this to real data from the exoplanet WASP-121b, an ultra-hot Jupiter with a mass of 1.16 M<sub>J</sub> and a radius of 1.75 R<sub>J</sub>. It orbits its host star every 1.27 days at a distance of 0.026 AU. With an equilibrium temperature of about 2341 K (Bourrier et al., 2020), its atmosphere is extremely hot and likely to host atomic and molecular species in emission. The spectrum shown below is the emission spectrum of carbon monoxide (CO) from WASP-121b, used here as a template in the cross-correlation analysis. This spectrum is taken from Beltz &amp; Rauscher (2024), which presents high-resolution spectroscopic data to investigate magnetic effects in ultra-hot Jupiters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># path to open file</span>
+<span class="n">file_path_121</span> <span class="o">=</span> <span class="s1">&#39;/Users/srnpt.p/Desktop/UMD_Summer_Project/W121/Spec_0_asp-121b-0G_IR_phase_0.0_inc_00.00.0000.00.dat&#39;</span>
+<span class="n">df_121</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path_121</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;flux&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">wavelength_121</span> <span class="o">=</span> <span class="n">df_121</span><span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">flux_121</span> <span class="o">=</span> <span class="n">df_121</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_121</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Spectrum of WASP-121b&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Wavelength [m]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Flux [erg s$^{-1}$ cm$^{-2}$ Hz$^{-1}$]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since we know that this is an emission spectrum of carbon monoxide, we can now test this by performing a cross-correlation between the observed spectrum and a high-resolution reference spectrum of CO from HITRAN. You can explore other molecular features on your own, but in this example, we’ll focus on confirming whether carbon monoxide is truly present. Feel free to download the line-by-line molecular data from the HITRAN database here: <a class="reference external" href="https://hitran.org/lbl/">https://hitran.org/lbl/</a>.</p>
+<p>In the example below, we load the CO data from HITRAN and perform a cross-correlation with the observed spectrum to check for the presence of carbon monoxide.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># file path to CO data</span>
+<span class="n">file_path_CO</span> <span class="o">=</span> <span class="s1">&#39;/Users/srnpt.p/Downloads/6883f503.par&#39;</span>
+<span class="n">colspecs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>    <span class="c1"># molecule number</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>    <span class="c1"># isotope number</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>   <span class="c1"># wavenumber [cm^-1]</span>
+    <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>  <span class="c1"># intensity [cm/molecule]</span>
+    <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>  <span class="c1"># air-broadened half-width</span>
+    <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span>  <span class="c1"># self-broadened half-width</span>
+    <span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="mi">45</span><span class="p">),</span>  <span class="c1"># lower state energy</span>
+<span class="p">]</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;molecule_number&#39;</span><span class="p">,</span> <span class="s1">&#39;isotope_number&#39;</span><span class="p">,</span> <span class="s1">&#39;wavenumber&#39;</span><span class="p">,</span> <span class="s1">&#39;intensity&#39;</span><span class="p">,</span> <span class="s1">&#39;air_half_width&#39;</span><span class="p">,</span> <span class="s1">&#39;self_half_width&#39;</span><span class="p">,</span> <span class="s1">&#39;lower_state_energy&#39;</span><span class="p">]</span>
+<span class="n">df_CO</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">file_path_CO</span><span class="p">,</span> <span class="n">colspecs</span> <span class="o">=</span> <span class="n">colspecs</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
+<span class="c1"># filter only for 12C16O (molecule 5, isotope 1)</span>
+<span class="n">df_CO</span> <span class="o">=</span> <span class="n">df_CO</span><span class="p">[(</span><span class="n">df_CO</span><span class="p">[</span><span class="s1">&#39;molecule_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_CO</span><span class="p">[</span><span class="s1">&#39;isotope_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_CO</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>From this .par file, we can find wavelength using wavenumber as wavenumber is in cm <span class="math notranslate nohighlight">\(^{-1}\)</span>. This can be converted to m unit using:</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda = \frac{1}{100 \times \text{wavenumber}}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\lambda\)</span> is the wavelength in meters (m),</p></li>
+<li><p>wavenumber is in (cm <span class="math notranslate nohighlight">\(^{-1}\)</span>).</p></li>
+</ul>
+<p>Multiplying the wavenumber by 100 converts it from cm <span class="math notranslate nohighlight">\(^{-1}\)</span> to m <span class="math notranslate nohighlight">\(^{-1}\)</span>, then taking the reciprocal gives the wavelength in meters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change wavenumber to wavelength in meters</span>
+<span class="n">df_CO</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">df_CO</span><span class="p">[</span><span class="s1">&#39;wavenumber&#39;</span><span class="p">])</span>  <span class="c1"># m</span>
+
+<span class="c1"># sort for proper plotting</span>
+<span class="n">df_CO_sorted</span> <span class="o">=</span> <span class="n">df_CO</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">)</span>
+<span class="n">wl_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
+<span class="n">wl_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
+<span class="n">df_CO_sorted</span> <span class="o">=</span> <span class="n">df_CO_sorted</span><span class="p">[(</span><span class="n">df_CO_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">wl_min</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_CO_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">wl_max</span><span class="p">)]</span>
+
+<span class="c1"># plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_CO_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">],</span> <span class="n">df_CO_sorted</span><span class="p">[</span><span class="s1">&#39;intensity&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength [m]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Intensity [$</span><span class="se">\\</span><span class="s1">frac{</span><span class="se">\\</span><span class="s1">text</span><span class="si">{cm}</span><span class="s1">}{</span><span class="se">\\</span><span class="s1">text</span><span class="si">{molecule}</span><span class="s1">}$]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Intensity vs Wavelength of Carbon Monoxide&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># interpolate CO intensity to match the WASP-121b wavelength grid</span>
+<span class="n">interp_CO</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">df_CO_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">],</span> <span class="n">df_CO_sorted</span><span class="p">[</span><span class="s1">&#39;intensity&#39;</span><span class="p">],</span> <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">bounds_error</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">co_on_121_grid</span> <span class="o">=</span> <span class="n">interp_CO</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
+
+<span class="c1"># use full WASP-121b wavelength grid</span>
+<span class="n">flux_valid</span> <span class="o">=</span> <span class="n">flux_121</span>
+<span class="n">co_valid</span> <span class="o">=</span> <span class="n">co_on_121_grid</span>
+<span class="n">wavelength_valid</span> <span class="o">=</span> <span class="n">wavelength_121</span>
+
+<span class="c1"># normalized cross-correlation</span>
+<span class="n">ccf_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">flux_valid</span><span class="p">,</span> <span class="n">co_valid</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;full&#39;</span><span class="p">)</span>
+<span class="n">normalized_ccf_signal</span> <span class="o">=</span> <span class="n">ccf_signal</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ccf_signal</span><span class="p">))</span>
+
+<span class="c1"># define lag axis based on full wavelength grid</span>
+<span class="n">lags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">co_valid</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">co_valid</span><span class="p">))</span>
+<span class="n">dlambda</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">wavelength_valid</span><span class="p">))</span>
+<span class="n">lags_lambda</span> <span class="o">=</span> <span class="n">lags</span> <span class="o">*</span> <span class="n">dlambda</span>
+
+<span class="c1"># find peak index and lag</span>
+<span class="n">peak_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">normalized_ccf_signal</span><span class="p">)</span>
+<span class="n">peak_lag</span> <span class="o">=</span> <span class="n">lags_lambda</span><span class="p">[</span><span class="n">peak_index</span><span class="p">]</span>
+
+<span class="c1"># plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lags_lambda</span><span class="p">,</span> <span class="n">normalized_ccf_signal</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">peak_lag</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Peak lag = </span><span class="si">{</span><span class="n">peak_lag</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1"> m&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cross-Correlation between WASP-121b Flux and CO Line Intensity&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Lag [m]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the plot above, the cross-correlation function has a clear peak, just like what we have done so far. This confirms that the line we used is indeed a carbon monoxide emission line. It suggests that the atmosphere of WASP-121b contains carbon monoxide, which leaves a unique spectral fingerprint through its emission. So, even though we see a peak, the shape and strength of the signal help us tell the difference between a real match and something that just looks like one. Now, let’s test another spectral feature that is not from carbon monoxide to see if the result still behaves the same. Let’s try with ammonia (NH₃).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># file path to NH3 data</span>
+<span class="n">file_path_NH3</span> <span class="o">=</span> <span class="s1">&#39;/Users/srnpt.p/Downloads/6885734e.par&#39;</span>
+
+<span class="c1"># define fixed-width column specs and names</span>
+<span class="n">colspecs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>    <span class="c1"># molecule number</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>    <span class="c1"># isotope number</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>   <span class="c1"># wavenumber [cm^-1]</span>
+    <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>  <span class="c1"># intensity [cm/molecule]</span>
+    <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>  <span class="c1"># air-broadened half-width</span>
+    <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span>  <span class="c1"># self-broadened half-width</span>
+    <span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="mi">45</span><span class="p">),</span>  <span class="c1"># lower state energy</span>
+<span class="p">]</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;molecule_number&#39;</span><span class="p">,</span> <span class="s1">&#39;isotope_number&#39;</span><span class="p">,</span> <span class="s1">&#39;wavenumber&#39;</span><span class="p">,</span> <span class="s1">&#39;intensity&#39;</span><span class="p">,</span> <span class="s1">&#39;air_half_width&#39;</span><span class="p">,</span> <span class="s1">&#39;self_half_width&#39;</span><span class="p">,</span> <span class="s1">&#39;lower_state_energy&#39;</span><span class="p">]</span>
+
+<span class="c1"># read the data</span>
+<span class="n">df_NH3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">file_path_NH3</span><span class="p">,</span> <span class="n">colspecs</span> <span class="o">=</span> <span class="n">colspecs</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
+
+<span class="c1"># filter only for main ammonia isotope (molecule 11, isotope 1)</span>
+<span class="n">df_NH3</span> <span class="o">=</span> <span class="n">df_NH3</span><span class="p">[(</span><span class="n">df_NH3</span><span class="p">[</span><span class="s1">&#39;molecule_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">11</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_NH3</span><span class="p">[</span><span class="s1">&#39;isotope_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df_NH3</span><span class="p">)</span>
+
+<span class="c1"># convert wavenumber to wavelength in meters</span>
+<span class="n">df_NH3</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">df_NH3</span><span class="p">[</span><span class="s1">&#39;wavenumber&#39;</span><span class="p">])</span>  <span class="c1"># m</span>
+
+<span class="c1"># sort for proper plotting</span>
+<span class="n">df_NH3_sorted</span> <span class="o">=</span> <span class="n">df_NH3</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">)</span>
+
+<span class="c1"># set wavelength range of interest (in meters)</span>
+<span class="n">wl_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
+<span class="n">wl_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
+<span class="n">df_NH3_sorted</span> <span class="o">=</span> <span class="n">df_NH3_sorted</span><span class="p">[(</span><span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">wl_min</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">wl_max</span><span class="p">)]</span>
+
+<span class="c1"># plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">],</span> <span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;intensity&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength [m]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Intensity [$</span><span class="se">\\</span><span class="s1">frac{</span><span class="se">\\</span><span class="s1">text</span><span class="si">{cm}</span><span class="s1">}{</span><span class="se">\\</span><span class="s1">text</span><span class="si">{molecule}</span><span class="s1">}$]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Intensity vs Wavelength of Ammonia&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># interpolate NH3 intensity to match the WASP-121b wavelength grid</span>
+<span class="n">interp_NH3</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">],</span> <span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;intensity&#39;</span><span class="p">],</span> <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">bounds_error</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">NH3_on_121_grid</span> <span class="o">=</span> <span class="n">interp_NH3</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
+
+<span class="c1"># use full WASP-121b wavelength grid</span>
+<span class="n">flux_valid</span> <span class="o">=</span> <span class="n">flux_121</span>
+<span class="n">NH3_valid</span> <span class="o">=</span> <span class="n">NH3_on_121_grid</span>
+<span class="n">wavelength_valid</span> <span class="o">=</span> <span class="n">wavelength_121</span>
+
+<span class="c1"># normalized cross-correlation</span>
+<span class="n">ccf_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">flux_valid</span><span class="p">,</span> <span class="n">NH3_valid</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;full&#39;</span><span class="p">)</span>
+<span class="n">normalized_ccf_signal</span> <span class="o">=</span> <span class="n">ccf_signal</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ccf_signal</span><span class="p">))</span>
+
+<span class="c1"># define lag axis based on full wavelength grid</span>
+<span class="n">lags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">NH3_valid</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">NH3_valid</span><span class="p">))</span>
+<span class="n">dlambda</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">wavelength_valid</span><span class="p">))</span>
+<span class="n">lags_lambda</span> <span class="o">=</span> <span class="n">lags</span> <span class="o">*</span> <span class="n">dlambda</span> 
+
+<span class="c1"># find peak index and lag</span>
+<span class="n">peak_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">normalized_ccf_signal</span><span class="p">)</span>
+<span class="n">peak_lag</span> <span class="o">=</span> <span class="n">lags_lambda</span><span class="p">[</span><span class="n">peak_index</span><span class="p">]</span>
+
+<span class="c1"># plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lags_lambda</span><span class="p">,</span> <span class="n">normalized_ccf_signal</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">peak_lag</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Peak lag = </span><span class="si">{</span><span class="n">peak_lag</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1"> m&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cross-Correlation between WASP-121b Flux and NH3 Line Intensity&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Lag [m]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the plot above, the shape of the cross-correlation function looks quite different from what we saw with carbon monoxide. Instead of a smooth bell curve, the CCF for ammonia has more of a flat top or triangle shape. At first, this might seem confusing because we said earlier that if there’s no match between the template and the data, the result should look like noise. But this doesn’t look like noise at all. The reason is that ammonia has fewer and sharper lines compared to CO. So even though NH₃ might not be present in the atmosphere of WASP-121b, the structure of its template still lines up in a way that gives a more defined peak. It doesn’t mean NH₃ is there. It just means the correlation isn’t completely random. The shape is different because the NH₃ lines are more isolated, and the overall template is simpler.</p>
+</section>
+</section>
+<section id="high-resolution-spectroscopy">
+<h2>High-Resolution Spectroscopy<a class="headerlink" href="#high-resolution-spectroscopy" title="Link to this heading">#</a></h2>
+<p>The cross-correlation method is an essential tool for identifying molecules in exoplanet atmospheres, especially when the planet’s signal is overwhelmed by its host star and Earth’s atmospheric contamination. High resolution spectroscopy (HRS) allows us to resolve thousands of narrow spectral channels, revealing fine details and Doppler shifts in the planet’s spectrum that differ from the star and telluric lines (Birkby, 2018). Because the planet moves at high orbital velocities, often tens to hundreds of km/s, its spectral lines shift significantly during an observation, while stellar and telluric features remain nearly stationary. This velocity difference enables cross-correlation techniques to disentangle and amplify the planet’s weak spectral fingerprints by coherently combining many molecular lines, thereby enhancing detection confidence. Such methods have successfully detected molecules like carbon monoxide in hot Jupiter atmospheres (Snellen et al., 2010; Birkby, 2018), demonstrating how cross-correlation and HRS together provide a powerful approach to characterizing exoplanet atmospheres.</p>
+<section id="separating-the-planet-s-signal">
+<h3>Separating the Planet’s Signal<a class="headerlink" href="#separating-the-planet-s-signal" title="Link to this heading">#</a></h3>
+<p>High-resolution spectroscopy alone isn’t enough to isolate the planet’s atmospheric signal from the star’s light. But we can use a simple idea: the star is basically stationary compared to the planet. That means the star’s spectral lines stay almost fixed in wavelength. The planet, however, rotates on its axis and orbits the star. This motion causes a Doppler shift, so the planet’s spectral lines shift slightly in wavelength over time. In reality, the star moves a little too, but its speed is much smaller than the planet’s orbital speed, so we assume the star is stationary for now. For more accurate work, we should include the star’s motion to avoid small errors in detecting the planet’s signal (Birkby, 2018).</p>
+</section>
+<section id="estimating-the-spectral-resolution-of-the-planet-s-signal">
+<h3>Estimating the Spectral Resolution of the Planet’s Signal<a class="headerlink" href="#estimating-the-spectral-resolution-of-the-planet-s-signal" title="Link to this heading">#</a></h3>
+<p>Resolution is defined by</p>
+<div class="math notranslate nohighlight">
+\[R = \frac{\lambda}{\Delta \lambda}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p>R is resolving power,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda\)</span> is wavelength,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Delta \lambda\)</span> is the smallest difference in wavelength that can be distinguished.</p></li>
+</ul>
+<p>The code below calculates the spectral resolution from a real spectral line of WASP-121b, like the data we used earlier. To avoid edge noise, we skip the first and last 10 data points. To make this easier for different datasets, here’s a function that calculates the original resolution:</p>
+</section>
+<section id="calculating-the-original-resolution">
+<h3>Calculating the Original Resolution<a class="headerlink" href="#calculating-the-original-resolution" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define function to find resolution from the original </span>
+<span class="k">def</span> <span class="nf">calculate_original_resolution</span><span class="p">(</span><span class="n">wavelength</span><span class="p">):</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>
+    <span class="n">delta_wl</span> <span class="o">=</span> <span class="p">(</span><span class="n">wavelength</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">wavelength</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># average spacing between wavelength points</span>
+    <span class="n">wl_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>  <span class="c1"># median wavelength as a good central value</span>
+    <span class="n">R_orig</span> <span class="o">=</span> <span class="n">wl_mid</span> <span class="o">/</span> <span class="n">delta_wl</span>  <span class="c1"># estimated resolving power</span>
+    <span class="k">return</span> <span class="n">R_orig</span>
+
+<span class="n">R_orig_121</span> <span class="o">=</span> <span class="n">calculate_original_resolution</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The original resolution from WASP-121b is </span><span class="si">{</span><span class="n">R_orig_121</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function estimates the resolving power based on the wavelength grid.</p>
+<section id="input-parameters">
+<h4>Input Parameters<a class="headerlink" href="#input-parameters" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>wavelength: array of wavelength values (any consistent unit, like meters or microns).</p></li>
+</ul>
+</section>
+<section id="how-the-function-works">
+<h4>How the Function Works<a class="headerlink" href="#how-the-function-works" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Counts number of wavelength points.</p></li>
+<li><p>Calculates average spacing between points.</p></li>
+<li><p>Finds median wavelength as the center.</p></li>
+<li><p>Computes resolving power using the formula.</p></li>
+</ol>
+<p>For WASP-121b, the resolution is about 125,000, which is very high! This depends on how finely the wavelengths are sampled, usually from the model or simulation. High resolution means we see fine spectral details, but it’s harder to compare with real instruments, which often have lower resolution.</p>
+</section>
+</section>
+<section id="resolution-detrending">
+<h3>Resolution Detrending<a class="headerlink" href="#resolution-detrending" title="Link to this heading">#</a></h3>
+<p>Another challenge is that the model spectra have much higher resolution than real instruments. For example:</p>
+<ul class="simple">
+<li><p>Models may have R &gt; 100,000 (Follert et al., n.d.).</p></li>
+<li><p>JWST has R ≈ 3,500 (Labiano et al., 2021).</p></li>
+<li><p>Ground-based spectrographs like CRIRES can reach R ≈ 100,000.</p></li>
+</ul>
+<p>While ground-based telescopes get high resolution, they face contamination from Earth’s atmosphere (telluric absorption) that can blur the signal. Here, we ignore atmosphere effects for simplicity. The key problem is if the model’s resolution is much higher than the instrument’s, directly comparing them can cause errors, especially when measuring Doppler shifts from winds or orbital motion. To fix this, we detrend the model,  we convolve the high-res spectrum with a kernel to match the instrument’s resolution. This makes comparison fair and accurate. Here’s a function to degrade the resolution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define function to degrade resolution</span>
+<span class="k">def</span> <span class="nf">degrade_resolution</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">flux</span><span class="p">,</span> <span class="n">R_orig</span><span class="p">,</span> <span class="n">R_target</span><span class="p">,</span> <span class="n">lambda_mid</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">n_kernel</span> <span class="o">=</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">R_target</span> <span class="o">&gt;=</span> <span class="n">R_orig</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">flux</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="c1"># set central wavelength</span>
+    <span class="k">if</span> <span class="n">lambda_mid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lambda_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>
+    
+    <span class="c1"># calculate FWHM of the Gaussian kernel</span>
+    <span class="n">fwhm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R_orig</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">R_target</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">lambda_mid</span> <span class="o">/</span> <span class="p">(</span><span class="n">R_orig</span> <span class="o">*</span> <span class="n">R_target</span><span class="p">))</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">fwhm</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>  <span class="c1"># change from FWHM to sigma</span>
+    
+    <span class="c1"># kernel setup</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">wavelength</span><span class="p">))</span>  <span class="c1"># assumes uniform spacing</span>
+    <span class="n">kernel_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">n_kernel</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">n_kernel</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">kernel_x</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">kernel</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kernel</span><span class="p">)</span>  <span class="c1"># normalize</span>
+    
+    <span class="n">origin</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kernel_x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kernel_x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">flux_conv</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">flux</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">flux_conv</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id1">
+<h4>Input Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>wavelength: wavelength array (microns or nm).</p></li>
+<li><p>flux: flux values.</p></li>
+<li><p>R_orig: original resolution of the model.</p></li>
+<li><p>R_target: target resolution (instrument).</p></li>
+<li><p>lambda_mid (optional): center wavelength.</p></li>
+<li><p>n_kernel (optional, default = 4): kernel width multiplier.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h4>How the Function Works<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>If instrument resolution ≥ model resolution, return original flux.</p></li>
+<li><p>Otherwise, calculate Gaussian kernel FWHM to blur model.</p></li>
+<li><p>Convert FWHM to sigma, build kernel over wavelength spacing.</p></li>
+<li><p>Convolve flux with kernel.</p></li>
+</ol>
+<p>Output is the flux degraded to instrument’s resolution.</p>
+<p>Now let’s try degrading the WASP-121b spectrum to JWST’s resolution (R = 3500):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the signal detected by JWST</span>
+<span class="n">R_JWST</span> <span class="o">=</span> <span class="mi">3500</span>
+<span class="n">flux_JWST</span> <span class="o">=</span> <span class="n">degrade_resolution</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_121</span><span class="p">,</span> <span class="n">R_orig_121</span><span class="p">,</span> <span class="n">R_JWST</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_121</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Original signal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_JWST</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Signal detected by JWST&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Spectrum of WASP-121b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Wavelength [m]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Flux [erg s$^{-1}$ cm$^{-2}$ Hz$^{-1}$]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The blue line is the original WASP-121b signal, pure and high-res. The orange line shows the signal as JWST would see it at R = 3500. As you can see, lower resolution means fewer data points and broader lines, losing spectral detail. This can cause uncertainty in future analyses like measuring wind speed with cross-correlation. Next, try Earth-based CRIRES at R = 100,000:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the signal detected by CRIRES</span>
+<span class="n">R_CRIRES</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">flux_CRIRES</span> <span class="o">=</span> <span class="n">degrade_resolution</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_121</span><span class="p">,</span> <span class="n">R_orig_121</span><span class="p">,</span> <span class="n">R_CRIRES</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_121</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Original signal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_CRIRES</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Signal detected by CRIRES&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Spectrum of WASP-121b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Wavelength [m]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Flux [erg s$^{-1}$ cm$^{-2}$ Hz$^{-1}$]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The CRIRES signal looks almost identical to the original because its resolution is close to the model’s R = 125,000. The detail is mostly preserved, with more data points than JWST. Finally, here’s a comparison at different resolutions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R_targets</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_121</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Original signal = </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">R_orig_121</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">R_targets</span><span class="p">:</span>
+    <span class="n">flux_target</span> <span class="o">=</span> <span class="n">degrade_resolution</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_121</span><span class="p">,</span> <span class="n">R_orig_121</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">,</span> <span class="n">flux_target</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;R = </span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Spectrum of WASP-121b at Different Spectral Resolutions&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Wavelength [m]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Flux [erg s$^{-1}$ cm$^{-2}$ Hz$^{-1}$]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The plot confirms that as resolution drops, the number of points decreases and lines broaden. Ground-based instruments usually get very high resolution but must handle Earth’s atmospheric contamination. Space telescopes avoid that but have lower resolution and less detail. Both have pros and cons, but we won’t get into that here. Next up, we’ll see how to calculate wind speeds in an exoplanet atmosphere.</p>
+</section>
+</section>
+</section>
+<section id="wind-speed-measurement">
+<h2>Wind Speed Measurement<a class="headerlink" href="#wind-speed-measurement" title="Link to this heading">#</a></h2>
+<p>Now that we understand cross-correlation and high-resolution spectroscopy, we can use these tools to measure wind speeds on exoplanets. We start with two datasets:</p>
+<ul class="simple">
+<li><p>No-wind spectrum: the planet’s spectrum assuming no atmospheric wind (Doppler off).</p></li>
+<li><p>Wind spectrum: the planet’s spectrum including horizontal winds (Doppler on).</p></li>
+</ul>
+<p>Cross-correlation helps us quantify the similarity between these two spectra. When we compute the cross-correlation function (CCF), the peak position corresponds to the wind speed on the planet. This is because wind causes a Doppler shift in spectral lines, shifting them to the blue or red end depending on the wind direction relative to the observer. By cross-correlating the wind-shifted spectrum with the no-wind reference, we test a range of velocity shifts. The velocity shift that produces the highest correlation (the CCF peak) reveals the Doppler shift caused by the wind, thus giving the wind speed. This technique was successfully used by Snellen et al. (2010) to detect blue-shifted carbon monoxide absorption lines in the atmosphere of HD 209458b, indicating strong winds flowing from the day side to the night side of the planet.</p>
+<section id="plotting-the-doppler-off-vs-doppler-on-spectra">
+<h3>Plotting the Doppler Off vs. Doppler On Spectra<a class="headerlink" href="#plotting-the-doppler-off-vs-doppler-on-spectra" title="Link to this heading">#</a></h3>
+<p>First, let’s load and plot the two WASP-121b spectra: Doppler off (no wind) and Doppler on (wind present):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># path to open file for doppler off case</span>
+<span class="n">file_path_121_off</span> <span class="o">=</span> <span class="s1">&#39;/Users/srnpt.p/Desktop/UMD_Summer_Project/W121/Spec_0_asp-121b-0G_IR_phase_0.0_inc_00.00.0000.00.dat&#39;</span>
+<span class="n">df_121_off</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path_121_off</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;flux&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">wavelength_121_off</span> <span class="o">=</span> <span class="n">df_121_off</span><span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">flux_121_off</span> <span class="o">=</span> <span class="n">df_121_off</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># path to open file for doppler on case</span>
+<span class="n">file_path_121_on</span> <span class="o">=</span> <span class="s1">&#39;/Users/srnpt.p/Desktop/UMD_Summer_Project/W121/Spec_1_asp-121b-0G_IR_phase_0.0_inc_00.00.0000.00.dat&#39;</span>
+<span class="n">df_121_on</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path_121_on</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;flux&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">wavelength_121_on</span> <span class="o">=</span> <span class="n">df_121_on</span><span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">flux_121_on</span> <span class="o">=</span> <span class="n">df_121_on</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_121_off</span><span class="p">,</span> <span class="n">flux_121_off</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Doppler off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_121_on</span><span class="p">,</span> <span class="n">flux_121_on</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Doppler on&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Spectrum of WASP-121b&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Wavelength [m]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Flux [erg s$^{-1}$ cm$^{-2}$ Hz$^{-1}$]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We see that wind changes the spectral lines on the wavelength grid.</p>
+</section>
+<section id="measuring-wind-speed-via-cross-correlation">
+<h3>Measuring Wind Speed via Cross-Correlation<a class="headerlink" href="#measuring-wind-speed-via-cross-correlation" title="Link to this heading">#</a></h3>
+<p>Instead of using a simple np.correlate, we implement a custom cross-correlation function to find the wind speed more accurately by comparing Doppler off and Doppler on spectra.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define function to do cross-correlation between two different datasets</span>
+<span class="k">def</span> <span class="nf">cross_correlation_function</span><span class="p">(</span><span class="n">filename_off</span><span class="p">,</span> <span class="n">filename_on</span><span class="p">,</span> <span class="n">R_target</span><span class="p">,</span> <span class="n">velocity_range</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">nc</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">plot</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">299792.458</span> <span class="c1"># define speed of light in km/s</span>
+
+    <span class="c1"># load spectra</span>
+    <span class="n">df_off</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_off</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;flux&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">df_on</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_on</span><span class="p">,</span>  <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;flux&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">wavelength_off</span> <span class="o">=</span> <span class="n">df_off</span><span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">flux_off</span> <span class="o">=</span> <span class="n">df_off</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">wavelength_on</span> <span class="o">=</span> <span class="n">df_on</span><span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">flux_on</span> <span class="o">=</span> <span class="n">df_on</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># recall function that can use to find the resolution of original signal</span>
+    <span class="n">R_orig</span> <span class="o">=</span> <span class="n">calculate_original_resolution</span><span class="p">(</span><span class="n">wavelength_off</span><span class="p">)</span> <span class="c1"># as they come from the same grid, resolution will be the same even though you use wavelength_on</span>
+
+    <span class="c1"># degrade both spectra to target resolution</span>
+    <span class="n">flux_off_R</span> <span class="o">=</span> <span class="n">degrade_resolution</span><span class="p">(</span><span class="n">wavelength_off</span><span class="p">,</span> <span class="n">flux_off</span><span class="p">,</span> <span class="n">R_orig</span><span class="p">,</span> <span class="n">R_target</span><span class="p">)</span>
+    <span class="n">flux_on_R</span>  <span class="o">=</span> <span class="n">degrade_resolution</span><span class="p">(</span><span class="n">wavelength_on</span><span class="p">,</span>  <span class="n">flux_on</span><span class="p">,</span>  <span class="n">R_orig</span><span class="p">,</span> <span class="n">R_target</span><span class="p">)</span>
+
+    <span class="c1"># limit to shared wavelength region</span>
+    <span class="n">min_wl</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">wavelength_off</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">wavelength_on</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="n">max_wl</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">wavelength_off</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">wavelength_on</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="n">mask_off</span> <span class="o">=</span> <span class="p">(</span><span class="n">wavelength_off</span> <span class="o">&gt;=</span> <span class="n">min_wl</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">wavelength_off</span> <span class="o">&lt;=</span> <span class="n">max_wl</span><span class="p">)</span>
+    <span class="n">mask_on</span>  <span class="o">=</span> <span class="p">(</span><span class="n">wavelength_on</span>  <span class="o">&gt;=</span> <span class="n">min_wl</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">wavelength_on</span>  <span class="o">&lt;=</span> <span class="n">max_wl</span><span class="p">)</span>
+
+    <span class="n">wavelength_off</span><span class="p">,</span> <span class="n">flux_off_R</span> <span class="o">=</span> <span class="n">wavelength_off</span><span class="p">[</span><span class="n">mask_off</span><span class="p">],</span> <span class="n">flux_off_R</span><span class="p">[</span><span class="n">mask_off</span><span class="p">]</span>
+    <span class="n">wavelength_on</span><span class="p">,</span>  <span class="n">flux_on_R</span>  <span class="o">=</span> <span class="n">wavelength_on</span><span class="p">[</span><span class="n">mask_on</span><span class="p">],</span>  <span class="n">flux_on_R</span><span class="p">[</span><span class="n">mask_on</span><span class="p">]</span>
+
+    <span class="c1"># sort wavelength_off and flux_off_R by wavelength_off ascending</span>
+    <span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">wavelength_off</span><span class="p">)</span>
+    <span class="n">wavelength_off_sorted</span> <span class="o">=</span> <span class="n">wavelength_off</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+    <span class="n">flux_off_R_sorted</span> <span class="o">=</span> <span class="n">flux_off_R</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+
+    <span class="c1"># remove NaNs and infs</span>
+    <span class="n">valid_mask</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">wavelength_off_sorted</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">flux_off_R_sorted</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">wavelength_off_sorted</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">flux_off_R_sorted</span><span class="p">))</span>
+
+    <span class="n">wavelength_off_clean</span> <span class="o">=</span> <span class="n">wavelength_off_sorted</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">]</span>
+    <span class="n">flux_off_R_clean</span> <span class="o">=</span> <span class="n">flux_off_R_sorted</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">]</span>
+
+    <span class="c1"># check strictly increasing wavelengths</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">wavelength_off_clean</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;wavelength array is not strictly increasing after cleaning.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># build spline model from OFF spectrum (cleaned data)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">splrep</span><span class="p">(</span><span class="n">wavelength_off_clean</span><span class="p">,</span> <span class="n">flux_off_R_clean</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># define velocity lags</span>
+    <span class="n">velocity_lags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">velocity_range</span><span class="p">,</span> <span class="n">velocity_range</span><span class="p">,</span> <span class="n">nc</span><span class="p">)</span>
+    <span class="n">ccf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">velocity_lags</span><span class="p">)</span>
+
+    <span class="c1"># compute cross-correlation at each velocity lag</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">velocity_lags</span><span class="p">):</span>
+        <span class="n">shifted_wavelength</span> <span class="o">=</span> <span class="n">wavelength_off_clean</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">v</span> <span class="o">/</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">shifted_flux</span> <span class="o">=</span> <span class="n">splev</span><span class="p">(</span><span class="n">shifted_wavelength</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+        <span class="n">f1</span> <span class="o">=</span> <span class="n">shifted_flux</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shifted_flux</span><span class="p">)</span>
+        <span class="n">f2</span> <span class="o">=</span> <span class="n">flux_on_R</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">flux_on_R</span><span class="p">)</span>
+
+        <span class="n">ccf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f1</span> <span class="o">*</span> <span class="n">f2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">f1</span><span class="p">)</span>
+        <span class="n">ccf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">shifted_flux</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">flux_on_R</span><span class="p">))</span>
+
+    <span class="c1"># find peak index</span>
+    <span class="n">peak_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ccf</span><span class="p">)</span>
+    <span class="n">velocity_at_peak_ccf</span> <span class="o">=</span> <span class="n">velocity_lags</span><span class="p">[</span><span class="n">peak_index</span><span class="p">]</span>
+
+    <span class="c1"># plot the CCF</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">velocity_lags</span><span class="p">,</span> <span class="n">ccf</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Signal detected at R = </span><span class="si">{</span><span class="n">R_target</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">velocity_at_peak_ccf</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Velocity shift [km/s]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Normalized cross-correlation&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normalized cross-correlation vs. velocity shift&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># peak velocity where CCF is maximized</span>
+    <span class="n">v_peak</span> <span class="o">=</span> <span class="n">velocity_lags</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ccf</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">velocity_lags</span><span class="p">,</span> <span class="n">ccf</span><span class="p">,</span> <span class="n">v_peak</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="inputs">
+<h4>Inputs<a class="headerlink" href="#inputs" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>filename_off: File path for no-wind spectrum.</p></li>
+<li><p>filename_on: File path for wind-affected spectrum.</p></li>
+<li><p>R_target: Target instrument resolution for degrading spectra.</p></li>
+<li><p>velocity_range: Maximum velocity (km/s) for cross-correlation window.</p></li>
+<li><p>nc: Number of velocity points.</p></li>
+<li><p>plot: Whether to plot the normalized CCF.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h4>How the Function Works<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Loads and cleans both spectra.</p></li>
+<li><p>Estimates original spectral resolution.</p></li>
+<li><p>Degrades spectra to target instrument resolution.</p></li>
+<li><p>Restricts comparison to common wavelength range.</p></li>
+<li><p>Interpolates Doppler off spectrum using spline.</p></li>
+<li><p>Computes normalized cross-correlation over velocity shifts.</p></li>
+<li><p>Finds peak correlation velocity — the inferred wind speed.</p></li>
+<li><p>Optionally plots the cross-correlation function.</p></li>
+</ol>
+</section>
+</section>
+<section id="estimating-wind-speed-at-full-resolution">
+<h3>Estimating Wind Speed at Full Resolution<a class="headerlink" href="#estimating-wind-speed-at-full-resolution" title="Link to this heading">#</a></h3>
+<p>Using the function on the WASP-121b data at full original resolution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cross correlation to find wind speed</span>
+<span class="n">vel_lags</span><span class="p">,</span> <span class="n">ccf_vals</span><span class="p">,</span> <span class="n">v_peak</span> <span class="o">=</span> <span class="n">cross_correlation_function</span><span class="p">(</span>
+    <span class="n">filename_off</span>  <span class="o">=</span> <span class="n">file_path_121_off</span><span class="p">,</span>
+    <span class="n">filename_on</span>   <span class="o">=</span> <span class="n">file_path_121_on</span><span class="p">,</span>
+    <span class="n">R_target</span>      <span class="o">=</span> <span class="n">calculate_original_resolution</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">),</span>
+    <span class="n">velocity_range</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">plot</span>          <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Velocity peak = </span><span class="si">{</span><span class="n">v_peak</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> km/s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The peak at around −0.87 km/s means the horizontal wind speed at this location is roughly −0.87 km/s.</p>
+</section>
+<section id="effect-of-instrument-resolution-on-wind-speed-measurement">
+<h3>Effect of Instrument Resolution on Wind Speed Measurement<a class="headerlink" href="#effect-of-instrument-resolution-on-wind-speed-measurement" title="Link to this heading">#</a></h3>
+<p>Let’s see how degrading resolution to match JWST (R = 3500) affects wind speed measurement:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cross correlation to find wind speed detected by JWST</span>
+<span class="n">vel_lags</span><span class="p">,</span> <span class="n">ccf_vals</span><span class="p">,</span> <span class="n">v_peak</span> <span class="o">=</span> <span class="n">cross_correlation_function</span><span class="p">(</span>
+    <span class="n">filename_off</span>  <span class="o">=</span> <span class="n">file_path_121_off</span><span class="p">,</span>
+    <span class="n">filename_on</span>   <span class="o">=</span> <span class="n">file_path_121_on</span><span class="p">,</span>
+    <span class="n">R_target</span>      <span class="o">=</span> <span class="n">R_JWST</span><span class="p">,</span>
+    <span class="n">velocity_range</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">plot</span>          <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Velocity peak = </span><span class="si">{</span><span class="n">v_peak</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> km/s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here the velocity peak shifts to about −0.07 km/s, underestimating the true wind speed. JWST’s lower resolution smooths spectral features, reducing measurement accuracy. Next, we check a high-resolution instrument like CRIRES (R = 100,000):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cross correlation to find wind speed detected by JWST</span>
+<span class="n">vel_lags</span><span class="p">,</span> <span class="n">ccf_vals</span><span class="p">,</span> <span class="n">v_peak</span> <span class="o">=</span> <span class="n">cross_correlation_function</span><span class="p">(</span>
+    <span class="n">filename_off</span>  <span class="o">=</span> <span class="n">file_path_121_off</span><span class="p">,</span>
+    <span class="n">filename_on</span>   <span class="o">=</span> <span class="n">file_path_121_on</span><span class="p">,</span>
+    <span class="n">R_target</span>      <span class="o">=</span> <span class="n">R_CRIRES</span><span class="p">,</span>
+    <span class="n">velocity_range</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">plot</span>          <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Velocity peak = </span><span class="si">{</span><span class="n">v_peak</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> km/s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The result matches the full-resolution measurement well because CRIRES resolution is close to the original data’s.</p>
+</section>
+<section id="resolution-vs-wind-speed-measurement-accuracy">
+<h3>Resolution vs. Wind Speed Measurement Accuracy<a class="headerlink" href="#resolution-vs-wind-speed-measurement-accuracy" title="Link to this heading">#</a></h3>
+<p>Finally, visualize how resolution affects wind speed accuracy by plotting the difference between true wind speed and measured wind speed across resolutions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate resolution of original signal</span>
+<span class="n">R_orig</span> <span class="o">=</span> <span class="n">calculate_original_resolution</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
+
+<span class="c1"># calculate v peak at original resolution</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">v_peak_orig</span> <span class="o">=</span> <span class="n">cross_correlation_function</span><span class="p">(</span>
+    <span class="n">filename_off</span>    <span class="o">=</span> <span class="n">file_path_121_off</span><span class="p">,</span>
+    <span class="n">filename_on</span>     <span class="o">=</span> <span class="n">file_path_121_on</span><span class="p">,</span>
+    <span class="n">R_target</span>        <span class="o">=</span> <span class="n">R_orig</span><span class="p">,</span>
+    <span class="n">velocity_range</span>  <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">plot</span>            <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span>
+
+<span class="c1"># define resolution range</span>
+<span class="n">R_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">R_orig</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># loop and store results</span>
+<span class="n">velocity_differences</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">resolutions</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">R_range</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">v_peak</span> <span class="o">=</span> <span class="n">cross_correlation_function</span><span class="p">(</span>
+            <span class="n">filename_off</span>    <span class="o">=</span> <span class="n">file_path_121_off</span><span class="p">,</span>
+            <span class="n">filename_on</span>     <span class="o">=</span> <span class="n">file_path_121_on</span><span class="p">,</span>
+            <span class="n">R_target</span>        <span class="o">=</span> <span class="n">R</span><span class="p">,</span>
+            <span class="n">velocity_range</span>  <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="n">plot</span>            <span class="o">=</span> <span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">delta_v</span> <span class="o">=</span> <span class="n">v_peak_orig</span> <span class="o">-</span> <span class="n">v_peak</span>
+        <span class="n">velocity_differences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">delta_v</span><span class="p">)</span>
+        <span class="n">resolutions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed at R = </span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">resolutions</span><span class="p">,</span> <span class="n">velocity_differences</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Spectral Resolution (R)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Velocity Difference [km/s]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Effect of Spectral Resolution on Wind Speed Measurement&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, decreasing resolution increases uncertainty in wind speed estimates. Ground-based instruments typically achieve high resolution but face atmospheric contamination, while space-based instruments avoid this but operate at lower resolution.</p>
+</section>
+</section>
+<section id="end-of-tutorial">
+<h2>End of Tutorial<a class="headerlink" href="#end-of-tutorial" title="Link to this heading">#</a></h2>
+<p>Congratulations! You have reached the end of this tutorial. In this guide, you’ve learned how to perform cross-correlation and use it to estimate the wind speed in an exoplanet’s atmosphere. The methods demonstrated here can be adapted to other datasets, whether from your own research or publicly available observations. This notebook is designed to be flexible and easy to modify, allowing you to explore different targets, locations, or magnetic models. If you have any questions or wish to extend your analysis further, feel free to reach out or explore additional resources. Thank you for following along!</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<p>Ahrer, E., Wheatley, P. J., Kirk, J., Gandhi, S., King, G. W., &amp; Louden, T. (2022). <em>LRG-BEASTS: Sodium absorption and Rayleigh scattering in the atmosphere of WASP-94A b using NTT/EFOSC2</em>. Monthly Notices of the Royal Astronomical Society, 510(4), 4857–4871. <a class="reference external" href="https://doi.org/10.1093/mnras/stab3805">https://doi.org/10.1093/mnras/stab3805</a></p>
+<p>Beltz, H., &amp; Rauscher, E. (2024). <em>Comparative Planetology of Magnetic Effects in Ultrahot Jupiters: Trends in High-resolution Spectroscopy</em>. The Astrophysical Journal, 962(1), 24. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2024ApJ...976...32B/abstract">https://ui.adsabs.harvard.edu/abs/2024ApJ…976…32B/abstract</a></p>
+<p>Birkby, J. L. (2018). <em>Exoplanet atmospheres at high spectral resolution</em>. arXiv. <a class="reference external" href="https://doi.org/10.48550/arXiv.1806.04617">https://doi.org/10.48550/arXiv.1806.04617</a></p>
+<p>Bourrier, V., Ehrenreich, D., Lendl, M., Cretignier, M., Allart, R., Dumusque, X., Cegla, H. M., Suárez-Mascareño, A., Wyttenbach, A., Hoeijmakers, H. J., Melo, C., Kuntzer, T., Astudillo-Defru, N., Giles, H., Heng, K., Kitzmann, D., Lavie, B., Lovis, C., Murgas, F., &amp; Nascimbeni, V. (2020). <em>Hot Exoplanet Atmospheres Resolved with Transit Spectroscopy (HEARTS). III. Atmospheric structure of the misaligned ultra-hot Jupiter WASP-121b</em>. Astronomy &amp; Astrophysics, 635, A205. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020A%26A...635A.205B/abstract">https://ui.adsabs.harvard.edu/abs/2020A%26A…635A.205B/abstract</a></p>
+<p>Esparza-Borges, E., López-Morales, M., Adams Redai, J. I., Pallé, E., Kirk, J., Casasayas-Barris, N., Batalha, N. E., Rackham, B. V., Bean, J. L., Casewell, S. L., et al. (2023). <em>Detection of carbon monoxide in the atmosphere of WASP-39b applying standard cross-correlation techniques to JWST NIRSpec G395H data</em>. The Astrophysical Journal Letters. <a class="reference external" href="https://doi.org/10.3847/2041-8213/acf27b">https://doi.org/10.3847/2041-8213/acf27b</a></p>
+<p>Follert, R., Dorn, R. J., Oliva, E., Lizon, J. L., Hatzes, A., Piskunov, N., Reiners, A., Seemann, U., Stempels, E., Heiter, U., Marquart, T., Lockhart, M., Anglada-Escudé, G., Löwinger, T., Baade, D., Grunhut, J., Bristow, P., Klein, B., Jung, Y., Ives, D. J., Kerber, F., Pozna, E., Paufique, J., Kaeufl, H. U., Origlia, L., Valenti, E., Gojak, D., Hilker, M., Pasquini, L., Smette, A., &amp; Smoker, J. (n.d.). <em>CRIRES+: A cross-dispersed high-resolution infrared spectrograph for the ESO VLT</em>. European Southern Observatory. <a class="reference external" href="https://www.eso.org/sci/facilities/develop/instruments/CRIRES_up/CRIRES_up_Overview.pdf">https://www.eso.org/sci/facilities/develop/instruments/CRIRES_up/CRIRES_up_Overview.pdf</a></p>
+<p>Fortney, J. J., Visscher, C., Marley, M. S., Hood, C. E., Line, M. R., Thorngren, D. P., Freedman, R. S., &amp; Lupu, R. (2020). <em>Beyond equilibrium temperature: How the atmosphere/interior connection affects the onset of methane, ammonia, and clouds in warm transiting giant planets</em>. The Astronomical Journal. <a class="reference external" href="https://doi.org/10.3847/1538-3881/abc5bd">https://doi.org/10.3847/1538-3881/abc5bd</a></p>
+<p>Harris, G. J., Tennyson, J., Kaminsky, B. M., Pavlenko, Y. V., &amp; Jones, H. R. A. (2006). <em>Improved HCN/HNC linelist, model atmospheres and synthetic spectra for WZ Cas</em>. Monthly Notices of the Royal Astronomical Society. <a class="reference external" href="https://doi.org/10.1111/j.1365-2966.2005.09960.x">https://doi.org/10.1111/j.1365-2966.2005.09960.x</a></p>
+<p>HITRAN Team. (n.d.). <em>HITRAN line-by-line molecular spectroscopic data</em>. HITRAN Database. <a class="reference external" href="https://hitran.org/lbl/">https://hitran.org/lbl/</a></p>
+<p>Kempton, E. M.-R., Perna, R., Heng, K., Fortney, J. J., &amp; Hubbard, W. B. (2014). <em>High resolution transmission spectroscopy as a diagnostic for Jovian exoplanet atmospheres: Constraints from theoretical models</em>. arXiv. <a class="reference external" href="https://doi.org/10.48550/arXiv.1409.1250">https://doi.org/10.48550/arXiv.1409.1250</a></p>
+<p>Labiano, A., Argyriou, I., Álvarez-Márquez, J., Glasse, A., Glauser, A., Patapis, P., Law, D., Brandl, B. R., Justtanont, K., Lahuis, F., Martínez-Galarza, J. R., Mueller, M., Noriega-Crespo, A., Royer, P., Shaughnessy, B., &amp; Vandenbussche, B. (2021). <em>Wavelength calibration and resolving power of the JWST MIRI Medium Resolution Spectrometer</em>. Astronomy &amp; Astrophysics, 656, A135.<br />
+<a class="reference external" href="https://www.aanda.org/articles/aa/full_html/2021/12/aa40614-21/aa40614-21.html">https://doi.org/10.1051/0004-6361/202140614</a></p>
+<p>NumPy Developers. (n.d.). <em>numpy.correlate</em>. NumPy v1.26 Manual. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.correlate.html">https://numpy.org/doc/stable/reference/generated/numpy.correlate.html</a></p>
+<p>Ranjan, S., Charbonneau, D., Désert, J.-M., Madhusudhan, N., Deming, D., Wilkins, A., &amp; Mandell, A. M. (2014). <em>Atmospheric characterization of five hot Jupiters with the Wide Field Camera 3 on the Hubble Space Telescope</em>. The Astrophysical Journal, 785(2), 148. <a class="reference external" href="https://doi.org/10.1088/0004-637X/785/2/148">https://doi.org/10.1088/0004-637X/785/2/148</a></p>
+<p>SciPy Developers. (n.d.). <em>scipy.signal.correlate</em>. SciPy v1.16.0 Reference Guide. <a class="reference external" href="https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.signal.correlate.html">https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.signal.correlate.html</a></p>
+<p>Snellen, I. A. G., de Kok, R. J., de Mooij, E. J. W., &amp; Albrecht, S. (2010). <em>The orbital motion, absolute mass and high-altitude winds of exoplanet HD 209458b</em>. Nature, 465(7301), 1049–1051. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2010Natur.465.1049S/abstract">https://ui.adsabs.harvard.edu/abs/2010Natur.465.1049S/abstract</a></p>
+<p>Wei, P.-S., Hsieh, Y.-C., Chiu, H.-H., Yen, D.-L., Lee, C., Tsai, Y.-C., &amp; Ting, T.-C. (2018). <em>Absorption coefficient of carbon dioxide across atmospheric troposphere layer</em>. Scientific Reports, 8, 17659. <a class="reference external" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6174548/">https://pmc.ncbi.nlm.nih.gov/articles/PMC6174548/</a></p>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p>Author(s): Sarunyapat (Pat) Phoompuang (<a class="reference external" href="mailto:sphoom22&#37;&#52;&#48;terpmail&#46;umd&#46;edu">sphoom22<span>&#64;</span>terpmail<span>&#46;</span>umd<span>&#46;</span>edu</a>) and Hayley Beltz (<a class="reference external" href="mailto:hbeltz&#37;&#52;&#48;umd&#46;edu">hbeltz<span>&#64;</span>umd<span>&#46;</span>edu</a>)</p>
+<p>Last updated: July 2025</p>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="markdown.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Markdown Files</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-correlation-function">Cross-Correlation Function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-numpy-package">Using the NumPy Package</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-scipy-package">Using the SciPy Package</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-correlation-of-two-uncorrelated-noise-signals">Cross-Correlation of Two Uncorrelated Noise Signals</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-correlation-of-two-shifted-signals">Cross-Correlation of Two Shifted Signals</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-correlation-of-realistic-spectral-lines-atmospheric-composition-detection">Cross-Correlation of Realistic Spectral Lines (Atmospheric Composition Detection)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-resolution-spectroscopy">High-Resolution Spectroscopy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#separating-the-planet-s-signal">Separating the Planet’s Signal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-spectral-resolution-of-the-planet-s-signal">Estimating the Spectral Resolution of the Planet’s Signal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-the-original-resolution">Calculating the Original Resolution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#input-parameters">Input Parameters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-function-works">How the Function Works</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-detrending">Resolution Detrending</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Input Parameters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">How the Function Works</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wind-speed-measurement">Wind Speed Measurement</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-doppler-off-vs-doppler-on-spectra">Plotting the Doppler Off vs. Doppler On Spectra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-wind-speed-via-cross-correlation">Measuring Wind Speed via Cross-Correlation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#inputs">Inputs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">How the Function Works</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-wind-speed-at-full-resolution">Estimating Wind Speed at Full Resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-instrument-resolution-on-wind-speed-measurement">Effect of Instrument Resolution on Wind Speed Measurement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-vs-wind-speed-measurement-accuracy">Resolution vs. Wind Speed Measurement Accuracy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-of-tutorial">End of Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
