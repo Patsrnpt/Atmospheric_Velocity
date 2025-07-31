@@ -1,0 +1,50 @@
+# Book settings
+# Learn more at https://jupyterbook.org/customize/config.html
+
+title: Estimating Atmospheric Wind Speed Using Cross-Correlation Analysis
+author: Sarunyapat (Pat) Phoompuang
+logo: logo.png
+
+# Force re-execution of notebooks on each build.
+# See https://jupyterbook.org/content/execute.html
+execute:
+  execute_notebooks: force
+  exclude_tags: ["no-execute"]
+  allow_errors: true
+
+# Define the name of the latex output file for PDF builds
+latex:
+  latex_documents:
+    targetname: book.tex
+
+# Add a bibtex file so that we can create citations
+bibtex_bibfiles:
+  - references.bib
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/sphoom22/atmospheric-velocity-book  # CHANGE TO YOUR ACTUAL REPO
+  path_to_book: mybook  # Set to your book folder name (likely 'mybook')
+  branch: main  # If your GitHub repo uses 'main'
+
+# Add GitHub buttons to your book
+html:
+  use_issues_button: true
+  use_repository_button: true
+
+  # 🌑 Enable dark mode (visitors can switch)
+  theme:
+    name: sphinx_book_theme
+    options:
+      theme_switcher: true
+      use_fullscreen_button: true
+      navbar_footer_text: "By Pat"
+      show_navbar_depth: 2
+      navigation_with_keys: true
+      launch_buttons:
+        colab_url: "https://colab.research.google.com"
+        notebook_interface: "jupyterlab"
+
+# Syntax highlighting like VS Code
+pygments_style: vs
+pygments_dark_style: native  # or 'monokai' for colorful code blocks in dark mode
