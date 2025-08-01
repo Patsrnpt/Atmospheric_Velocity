@@ -602,7 +602,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/dbd5bb0cb4e2129ffbe68ee3f411900879a55e12ced66cc0db9254b06ae139ba.png" src="_images/dbd5bb0cb4e2129ffbe68ee3f411900879a55e12ced66cc0db9254b06ae139ba.png" />
+<img alt="_images/4636981a1c39aa1c90493c2e06fd7453d68b6e153e5509c7be4bd2bf0ff57591.png" src="_images/4636981a1c39aa1c90493c2e06fd7453d68b6e153e5509c7be4bd2bf0ff57591.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -633,7 +633,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cc4a85cd1f893791c1d9cbd5a9dd6109fd8bd945696e7b880fd583fe50123fb1.png" src="_images/cc4a85cd1f893791c1d9cbd5a9dd6109fd8bd945696e7b880fd583fe50123fb1.png" />
+<img alt="_images/40e5762584d2e21f2ba5bc11c57eaf6e1de2d0322d199fbba163def3f60389fe.png" src="_images/40e5762584d2e21f2ba5bc11c57eaf6e1de2d0322d199fbba163def3f60389fe.png" />
 </div>
 </div>
 <p>As expected, the plot does not show any strong peak. The correlation values fluctuate around zero, indicating no systematic alignment between the two signals. This result confirms that the cross-correlation function is sensitive to genuine similarity and does not produce false positives when signals are unrelated.</p>
@@ -726,7 +726,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6f765402e7f9f2a813e64f181b93dd86f01d429c3078a72918b90bd2198120d3.png" src="_images/6f765402e7f9f2a813e64f181b93dd86f01d429c3078a72918b90bd2198120d3.png" />
+<img alt="_images/b39709a88d83cab793b9be927429346a8efae6a7515378df96efa24e3521e527.png" src="_images/b39709a88d83cab793b9be927429346a8efae6a7515378df96efa24e3521e527.png" />
 </div>
 </div>
 <p>This simulated spectrum is simplified and idealized. Real observational data is often more complex and noisier, affected by factors such as the interstellar medium (ISM) and instrumental noise. However, this example clearly shows the fundamental concept of how cross-correlation can be used to identify spectral features. Next, let’s map this spectral data onto a time array grid and apply cross-correlation to detect the presence and shifts of these spectral signals.</p>
@@ -791,7 +791,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/aa339db15a5d7d914fa7fc7a71ff6d11b8861405a53fda5cbce0f0fa78d2ee7d.png" src="_images/aa339db15a5d7d914fa7fc7a71ff6d11b8861405a53fda5cbce0f0fa78d2ee7d.png" />
+<img alt="_images/f2d0ca4eaf23f8d9233651d6f31be59317bc3acb799ebc7cd787d04d2a805d99.png" src="_images/f2d0ca4eaf23f8d9233651d6f31be59317bc3acb799ebc7cd787d04d2a805d99.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -829,7 +829,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b5c619a54b102f16d0201a4c6e62d783d3e3504b046f491c040eecfa2f1d91d6.png" src="_images/b5c619a54b102f16d0201a4c6e62d783d3e3504b046f491c040eecfa2f1d91d6.png" />
+<img alt="_images/57400a295a6b3a4c0e491153edb42bbae4774ad127c73e209f3a8251fcaacb3f.png" src="_images/57400a295a6b3a4c0e491153edb42bbae4774ad127c73e209f3a8251fcaacb3f.png" />
 </div>
 </div>
 <p>From the CCF plot above, we see that the normalized cross-correlation peaks at t = 15. This means the two signals are shifted relative to each other by 15 time units. This result matches the time values we assigned earlier: a signal duration of 10 units plus a time gap of 5 units, summing to 15 units total. You can experiment with these time values yourself; the peak lag will always correspond to the combined duration of the signal and the gap between signals. Moreover, the cross-correlation produces a clear peak even when the amplitudes of the two signals are not the same. This highlights one of the strengths of cross-correlation: it focuses on the similarity of patterns rather than their absolute magnitudes. This makes it a powerful technique when signals are noisy, partially missing, or scaled differently, which is often the case in real observational data.</p>
@@ -861,12 +861,12 @@ document.write(`
 <img alt="_images/8b6bb791288250519595f5964b06a45d39fbe2e85da9273d37751bd38bdb4247.png" src="_images/8b6bb791288250519595f5964b06a45d39fbe2e85da9273d37751bd38bdb4247.png" />
 </div>
 </div>
-<p>Since we know that this is an emission spectrum of carbon monoxide, we can now test this by performing a cross-correlation between the observed spectrum and a high-resolution reference spectrum of CO from HITRAN. You can explore other molecular features on your own, but in this example, we’ll focus on confirming whether carbon monoxide is truly present. Feel free to download the line-by-line molecular data from the HITRAN database here: <a class="reference external" href="https://hitran.org/lbl/">https://hitran.org/lbl/</a>.</p>
+<p>Since we know that this is an emission spectrum of carbon monoxide, we can now test this by performing a cross-correlation between the observed spectrum and a high-resolution reference spectrum of CO from HITWMP. You can explore other molecular features on your own, but in this example, we’ll focus on confirming whether carbon monoxide is truly present. Feel free to download the line-by-line molecular data from the HITEMP here: <a class="reference external" href="https://hitran.org/hitemp/">https://hitran.org/hitemp/</a>.</p>
 <p>In the example below, we load the CO data from HITRAN and perform a cross-correlation with the observed spectrum to check for the presence of carbon monoxide.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># file path to CO data</span>
-<span class="n">file_path_CO</span> <span class="o">=</span> <span class="s1">&#39;/Users/srnpt.p/Downloads/6883f503.par&#39;</span>
+<span class="n">file_path_CO</span> <span class="o">=</span> <span class="s1">&#39;/Users/srnpt.p/Downloads/05_HITEMP2019.par&#39;</span>
 <span class="n">colspecs</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>    <span class="c1"># molecule number</span>
     <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>    <span class="c1"># isotope number</span>
@@ -878,40 +878,38 @@ document.write(`
 <span class="p">]</span>
 <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;molecule_number&#39;</span><span class="p">,</span> <span class="s1">&#39;isotope_number&#39;</span><span class="p">,</span> <span class="s1">&#39;wavenumber&#39;</span><span class="p">,</span> <span class="s1">&#39;intensity&#39;</span><span class="p">,</span> <span class="s1">&#39;air_half_width&#39;</span><span class="p">,</span> <span class="s1">&#39;self_half_width&#39;</span><span class="p">,</span> <span class="s1">&#39;lower_state_energy&#39;</span><span class="p">]</span>
 <span class="n">df_CO</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">file_path_CO</span><span class="p">,</span> <span class="n">colspecs</span> <span class="o">=</span> <span class="n">colspecs</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
-<span class="c1"># filter only for 12C16O (molecule 5, isotope 1)</span>
-<span class="n">df_CO</span> <span class="o">=</span> <span class="n">df_CO</span><span class="p">[(</span><span class="n">df_CO</span><span class="p">[</span><span class="s1">&#39;molecule_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_CO</span><span class="p">[</span><span class="s1">&#39;isotope_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df_CO</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      molecule_number  isotope_number    wavenumber     intensity  \
-19                  5               1      3.705026  2.354000e-44   
-21                  5               1      3.740024  1.110000e-38   
-23                  5               1      3.775024  9.233000e-34   
-24                  5               1      3.810028  5.706000e-29   
-25                  5               1      3.845033  3.300000e-24   
-...               ...             ...           ...           ...   
-5376                5               1  14476.820256  2.801000e-30   
-5377                5               1  14476.945279  1.255000e-30   
-5378                5               1  14477.222219  2.368000e-30   
-5379                5               1  14477.284878  1.584000e-30   
-5380                5               1  14477.377142  1.958000e-30   
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        molecule_number  isotope_number    wavenumber      intensity  \
+0                     5               5      2.248764  2.700000e-164   
+1                     5               5      2.279785  6.503000e-162   
+2                     5               6      2.288013  3.667000e-166   
+3                     5               5      2.310683  1.737000e-159   
+4                     5               6      2.320259  8.961000e-164   
+...                 ...             ...           ...            ...   
+752971                5               1  22147.135667   1.804000e-31   
+752972                5               1  22147.866612   2.015000e-31   
+752973                5               1  22147.897630   1.933000e-31   
+752974                5               1  22148.263252   2.038000e-31   
+752975                5               1  22148.273542   2.011000e-31   
 
-      air_half_width  self_half_width lower_state_energy  
-19              2.86     8.000000e-10         .08030.087  
-21              5.99     9.000000e-09         .08030.087  
-23              1.94     7.000000e-08         .08030.087  
-24              4.13     0.000000e+00         .08030.087  
-25              7.20     7.000000e-08         .08030.087  
-...              ...              ...                ...  
-5376            7.65     9.000000e-09         .05610.060  
-5377            7.81     5.000000e-09         .05310.057  
-5378            7.68     5.000000e-09         .05530.059  
-5379            7.76     2.000000e-09         .05380.058  
-5380            7.71     9.000000e-09         .05450.059  
+        air_half_width  self_half_width lower_state_energy  
+0                 8.70     4.000000e-07         .07970.086  
+1                 8.68     5.000000e-07         .07970.086  
+2                 9.36     2.000000e-07         .07970.086  
+3                 8.63     8.000000e-07         .07970.086  
+4                 9.35     7.000000e-07         .07970.086  
+...                ...              ...                ...  
+752971            7.16     4.000000e-10         .06120.069  
+752972            9.85     2.000000e-10         .05730.063  
+752973            7.72     0.000000e+00         .05990.067  
+752974            9.05     6.000000e-10         .05800.064  
+752975            8.34     8.000000e-10         .05890.066  
 
-[1344 rows x 7 columns]
+[752976 rows x 7 columns]
 </pre></div>
 </div>
 </div>
@@ -951,7 +949,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4093c234d73d3d0bfed905a6cfb1cb5816584c98c191e7e907bc455aee58d757.png" src="_images/4093c234d73d3d0bfed905a6cfb1cb5816584c98c191e7e907bc455aee58d757.png" />
+<img alt="_images/9fd63f63dbd6e643483753f6b516ddb33c358ee7ec0fa955795eeabd5d4e58b2.png" src="_images/9fd63f63dbd6e643483753f6b516ddb33c358ee7ec0fa955795eeabd5d4e58b2.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -993,14 +991,14 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c307bd9b68a516de421a1b219e72dd25562f595a14d2c338d54fbd912b24ed01.png" src="_images/c307bd9b68a516de421a1b219e72dd25562f595a14d2c338d54fbd912b24ed01.png" />
+<img alt="_images/e9bbc2a05e790bc3783599c295e50686bb61a1b58322d6a1817f0c9d847f8c90.png" src="_images/e9bbc2a05e790bc3783599c295e50686bb61a1b58322d6a1817f0c9d847f8c90.png" />
 </div>
 </div>
-<p>From the plot above, the cross-correlation function has a clear peak, just like what we have done so far. This confirms that the line we used is indeed a carbon monoxide emission line. It suggests that the atmosphere of WASP-121b contains carbon monoxide, which leaves a unique spectral fingerprint through its emission. So, even though we see a peak, the shape and strength of the signal help us tell the difference between a real match and something that just looks like one. Now, let’s test another spectral feature that is not from carbon monoxide to see if the result still behaves the same. Let’s try with ammonia (NH₃).</p>
+<p>From the plot above, the cross-correlation function has a clear peak, just like what we have done so far. This confirms that the line we used is indeed a carbon monoxide emission line. It suggests that the atmosphere of WASP-121b contains carbon monoxide, which leaves a unique spectral fingerprint through its emission. So, even though we see a peak, the shape and strength of the signal help us tell the difference between a real match and something that just looks like one. Now, let’s test another spectral feature that is not from carbon monoxide to see if the result still behaves the same. Let’s try with nitric oxide (NO).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># file path to NH3 data</span>
-<span class="n">file_path_NH3</span> <span class="o">=</span> <span class="s1">&#39;/Users/srnpt.p/Downloads/6885734e.par&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># file path to NO data</span>
+<span class="n">file_path_NO</span> <span class="o">=</span> <span class="s1">&#39;/Users/srnpt.p/Downloads/08_HITEMP2019.par&#39;</span>
 
 <span class="c1"># define fixed-width column specs and names</span>
 <span class="n">colspecs</span> <span class="o">=</span> <span class="p">[</span>
@@ -1015,30 +1013,25 @@ document.write(`
 <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;molecule_number&#39;</span><span class="p">,</span> <span class="s1">&#39;isotope_number&#39;</span><span class="p">,</span> <span class="s1">&#39;wavenumber&#39;</span><span class="p">,</span> <span class="s1">&#39;intensity&#39;</span><span class="p">,</span> <span class="s1">&#39;air_half_width&#39;</span><span class="p">,</span> <span class="s1">&#39;self_half_width&#39;</span><span class="p">,</span> <span class="s1">&#39;lower_state_energy&#39;</span><span class="p">]</span>
 
 <span class="c1"># read the data</span>
-<span class="n">df_NH3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">file_path_NH3</span><span class="p">,</span> <span class="n">colspecs</span> <span class="o">=</span> <span class="n">colspecs</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
-
-<span class="c1"># filter only for main ammonia isotope (molecule 11, isotope 1)</span>
-<span class="n">df_NH3</span> <span class="o">=</span> <span class="n">df_NH3</span><span class="p">[(</span><span class="n">df_NH3</span><span class="p">[</span><span class="s1">&#39;molecule_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">11</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_NH3</span><span class="p">[</span><span class="s1">&#39;isotope_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">df_NH3</span><span class="p">)</span>
+<span class="n">df_NO</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">file_path_NO</span><span class="p">,</span> <span class="n">colspecs</span> <span class="o">=</span> <span class="n">colspecs</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
 
 <span class="c1"># convert wavenumber to wavelength in meters</span>
-<span class="n">df_NH3</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">df_NH3</span><span class="p">[</span><span class="s1">&#39;wavenumber&#39;</span><span class="p">])</span>  <span class="c1"># m</span>
+<span class="n">df_NO</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">df_NO</span><span class="p">[</span><span class="s1">&#39;wavenumber&#39;</span><span class="p">])</span>  <span class="c1"># m</span>
 
 <span class="c1"># sort for proper plotting</span>
-<span class="n">df_NH3_sorted</span> <span class="o">=</span> <span class="n">df_NH3</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">)</span>
+<span class="n">df_NO_sorted</span> <span class="o">=</span> <span class="n">df_NO</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">)</span>
 
 <span class="c1"># set wavelength range of interest (in meters)</span>
 <span class="n">wl_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
 <span class="n">wl_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
-<span class="n">df_NH3_sorted</span> <span class="o">=</span> <span class="n">df_NH3_sorted</span><span class="p">[(</span><span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">wl_min</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">wl_max</span><span class="p">)]</span>
+<span class="n">df_NO_sorted</span> <span class="o">=</span> <span class="n">df_NO_sorted</span><span class="p">[(</span><span class="n">df_NO_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">wl_min</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_NO_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">wl_max</span><span class="p">)]</span>
 
 <span class="c1"># plot</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">],</span> <span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;intensity&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_NO_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">],</span> <span class="n">df_NO_sorted</span><span class="p">[</span><span class="s1">&#39;intensity&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength [m]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Intensity [$</span><span class="se">\\</span><span class="s1">frac{</span><span class="se">\\</span><span class="s1">text</span><span class="si">{cm}</span><span class="s1">}{</span><span class="se">\\</span><span class="s1">text</span><span class="si">{molecule}</span><span class="s1">}$]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Intensity vs Wavelength of Ammonia&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Intensity vs Wavelength of NO&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1046,57 +1039,28 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       molecule_number  isotope_number    wavenumber     intensity  \
-0                   11               1      0.058210  1.440000e-30   
-1                   11               1      0.081197  2.413000e-34   
-2                   11               1      0.081510  7.423000e-35   
-3                   11               1      0.081890  3.562000e-34   
-4                   11               1      0.082023  5.057000e-34   
-...                ...             ...           ...           ...   
-90391               11               1  10345.945000  2.180000e-25   
-90392               11               1  10346.111500  1.070000e-25   
-90393               11               1  10346.255100  1.160000e-24   
-90394               11               1  10348.507190  2.320000e-25   
-90395               11               1  10348.719190  1.550000e-24   
-
-       air_half_width  self_half_width lower_state_energy  
-0                4.57     5.000000e-12         .06550.500  
-1                4.71     5.000000e-11         .10440.500  
-2                3.78     6.000000e-11         .09740.500  
-3                3.28     4.000000e-11         .09060.500  
-4                1.21     4.000000e-11         .07150.500  
-...               ...              ...                ...  
-90391            0.00     0.000000e+00         .06500.521  
-90392            0.00     0.000000e+00         .06500.521  
-90393            0.00     0.000000e+00         .06500.521  
-90394            0.00     0.000000e+00         .06500.521  
-90395            0.00     0.000000e+00         .06500.521  
-
-[76605 rows x 7 columns]
-</pre></div>
-</div>
-<img alt="_images/c145970c9d63176f5829d4b20a23b3f21c1444de132d43816970c6b369d3a321.png" src="_images/c145970c9d63176f5829d4b20a23b3f21c1444de132d43816970c6b369d3a321.png" />
+<img alt="_images/879ec4b667ec7b4e0d72636b6a6c9261f48afd1506c3963dbffd271353ee7c03.png" src="_images/879ec4b667ec7b4e0d72636b6a6c9261f48afd1506c3963dbffd271353ee7c03.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># interpolate NH3 intensity to match the WASP-121b wavelength grid</span>
-<span class="n">interp_NH3</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">],</span> <span class="n">df_NH3_sorted</span><span class="p">[</span><span class="s1">&#39;intensity&#39;</span><span class="p">],</span> <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">bounds_error</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">NH3_on_121_grid</span> <span class="o">=</span> <span class="n">interp_NH3</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># interpolate NO intensity to match the WASP-121b wavelength grid</span>
+<span class="n">interp_NO</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">df_NO_sorted</span><span class="p">[</span><span class="s1">&#39;wavelength_m&#39;</span><span class="p">],</span> <span class="n">df_NO_sorted</span><span class="p">[</span><span class="s1">&#39;intensity&#39;</span><span class="p">],</span> <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">bounds_error</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">NO_on_121_grid</span> <span class="o">=</span> <span class="n">interp_NO</span><span class="p">(</span><span class="n">wavelength_121</span><span class="p">)</span>
 
 <span class="c1"># use full WASP-121b wavelength grid</span>
 <span class="n">flux_valid</span> <span class="o">=</span> <span class="n">flux_121</span>
-<span class="n">NH3_valid</span> <span class="o">=</span> <span class="n">NH3_on_121_grid</span>
+<span class="n">NO_valid</span> <span class="o">=</span> <span class="n">NO_on_121_grid</span>
 <span class="n">wavelength_valid</span> <span class="o">=</span> <span class="n">wavelength_121</span>
 
 <span class="c1"># normalized cross-correlation</span>
-<span class="n">ccf_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">flux_valid</span><span class="p">,</span> <span class="n">NH3_valid</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;full&#39;</span><span class="p">)</span>
+<span class="n">ccf_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">flux_valid</span><span class="p">,</span> <span class="n">NO_valid</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;full&#39;</span><span class="p">)</span>
 <span class="n">normalized_ccf_signal</span> <span class="o">=</span> <span class="n">ccf_signal</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ccf_signal</span><span class="p">))</span>
 
 <span class="c1"># define lag axis based on full wavelength grid</span>
-<span class="n">lags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">NH3_valid</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">NH3_valid</span><span class="p">))</span>
+<span class="n">lags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">NO_valid</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">NO_valid</span><span class="p">))</span>
 <span class="n">dlambda</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">wavelength_valid</span><span class="p">))</span>
-<span class="n">lags_lambda</span> <span class="o">=</span> <span class="n">lags</span> <span class="o">*</span> <span class="n">dlambda</span> 
+<span class="n">lags_lambda</span> <span class="o">=</span> <span class="n">lags</span> <span class="o">*</span> <span class="n">dlambda</span>
 
 <span class="c1"># find peak index and lag</span>
 <span class="n">peak_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">normalized_ccf_signal</span><span class="p">)</span>
@@ -1106,7 +1070,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lags_lambda</span><span class="p">,</span> <span class="n">normalized_ccf_signal</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">peak_lag</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Peak lag = </span><span class="si">{</span><span class="n">peak_lag</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1"> m&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cross-Correlation between WASP-121b Flux and NH3 Line Intensity&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cross-Correlation between WASP-121b Flux and NO Line Intensity&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Lag [m]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Normalized CCF&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -1117,10 +1081,10 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4646f223936f6f69026ad658827750e9c312ca0ac5505286450aeee4011dd7d5.png" src="_images/4646f223936f6f69026ad658827750e9c312ca0ac5505286450aeee4011dd7d5.png" />
+<img alt="_images/9980ea32b33c0da7b0182e461f125d2c4b8b9f8ec228b9e2f24fbd267aaede4c.png" src="_images/9980ea32b33c0da7b0182e461f125d2c4b8b9f8ec228b9e2f24fbd267aaede4c.png" />
 </div>
 </div>
-<p>From the plot above, the shape of the cross-correlation function looks quite different from what we saw with carbon monoxide. Instead of a smooth bell curve, the CCF for ammonia has more of a flat top or triangle shape. At first, this might seem confusing because we said earlier that if there’s no match between the template and the data, the result should look like noise. But this doesn’t look like noise at all. The reason is that ammonia has fewer and sharper lines compared to CO. So even though NH₃ might not be present in the atmosphere of WASP-121b, the structure of its template still lines up in a way that gives a more defined peak. It doesn’t mean NH₃ is there. It just means the correlation isn’t completely random. The shape is different because the NH₃ lines are more isolated, and the overall template is simpler.</p>
+<p>The shape of the cross-correlation function for nitric oxide looks very different from what we saw with carbon monoxide. Instead of a smooth curve with a clear peak, the CCF for NO rises quickly and then stays flat for a while before it drops off. It looks more like a plateau. Because there is no distinct peak, the signal does not show a strong match with the NO template. This flat shape is similar to noise, which suggests that the observed signal is not caused by NO.</p>
 </section>
 </section>
 <section id="high-resolution-spectroscopy">
@@ -1624,15 +1588,16 @@ document.write(`
 <p>Esparza-Borges, E., López-Morales, M., Adams Redai, J. I., Pallé, E., Kirk, J., Casasayas-Barris, N., Batalha, N. E., Rackham, B. V., Bean, J. L., Casewell, S. L., et al. (2023). <em>Detection of carbon monoxide in the atmosphere of WASP-39b applying standard cross-correlation techniques to JWST NIRSpec G395H data</em>. The Astrophysical Journal Letters. <a class="reference external" href="https://doi.org/10.3847/2041-8213/acf27b">https://doi.org/10.3847/2041-8213/acf27b</a></p>
 <p>Follert, R., Dorn, R. J., Oliva, E., Lizon, J. L., Hatzes, A., Piskunov, N., Reiners, A., Seemann, U., Stempels, E., Heiter, U., Marquart, T., Lockhart, M., Anglada-Escudé, G., Löwinger, T., Baade, D., Grunhut, J., Bristow, P., Klein, B., Jung, Y., Ives, D. J., Kerber, F., Pozna, E., Paufique, J., Kaeufl, H. U., Origlia, L., Valenti, E., Gojak, D., Hilker, M., Pasquini, L., Smette, A., &amp; Smoker, J. (n.d.). <em>CRIRES+: A cross-dispersed high-resolution infrared spectrograph for the ESO VLT</em>. European Southern Observatory. <a class="reference external" href="https://www.eso.org/sci/facilities/develop/instruments/CRIRES_up/CRIRES_up_Overview.pdf">https://www.eso.org/sci/facilities/develop/instruments/CRIRES_up/CRIRES_up_Overview.pdf</a></p>
 <p>Fortney, J. J., Visscher, C., Marley, M. S., Hood, C. E., Line, M. R., Thorngren, D. P., Freedman, R. S., &amp; Lupu, R. (2020). <em>Beyond equilibrium temperature: How the atmosphere/interior connection affects the onset of methane, ammonia, and clouds in warm transiting giant planets</em>. The Astronomical Journal. <a class="reference external" href="https://doi.org/10.3847/1538-3881/abc5bd">https://doi.org/10.3847/1538-3881/abc5bd</a></p>
+<p>Harris, C. R., Millman, K. J., van der Walt, S. J., et al. (2020). Array programming with NumPy. <em>Nature, 585</em>, 357–362. <a class="reference external" href="https://doi.org/10.1038/s41586-020-2649-2">Publisher link</a></p>
 <p>Harris, G. J., Tennyson, J., Kaminsky, B. M., Pavlenko, Y. V., &amp; Jones, H. R. A. (2006). <em>Improved HCN/HNC linelist, model atmospheres and synthetic spectra for WZ Cas</em>. Monthly Notices of the Royal Astronomical Society. <a class="reference external" href="https://doi.org/10.1111/j.1365-2966.2005.09960.x">https://doi.org/10.1111/j.1365-2966.2005.09960.x</a></p>
-<p>HITRAN Team. (n.d.). <em>HITRAN line-by-line molecular spectroscopic data</em>. HITRAN Database. <a class="reference external" href="https://hitran.org/lbl/">https://hitran.org/lbl/</a></p>
 <p>Kempton, E. M.-R., Perna, R., Heng, K., Fortney, J. J., &amp; Hubbard, W. B. (2014). <em>High resolution transmission spectroscopy as a diagnostic for Jovian exoplanet atmospheres: Constraints from theoretical models</em>. arXiv. <a class="reference external" href="https://doi.org/10.48550/arXiv.1409.1250">https://doi.org/10.48550/arXiv.1409.1250</a></p>
 <p>Labiano, A., Argyriou, I., Álvarez-Márquez, J., Glasse, A., Glauser, A., Patapis, P., Law, D., Brandl, B. R., Justtanont, K., Lahuis, F., Martínez-Galarza, J. R., Mueller, M., Noriega-Crespo, A., Royer, P., Shaughnessy, B., &amp; Vandenbussche, B. (2021). <em>Wavelength calibration and resolving power of the JWST MIRI Medium Resolution Spectrometer</em>. Astronomy &amp; Astrophysics, 656, A135.<br />
 <a class="reference external" href="https://www.aanda.org/articles/aa/full_html/2021/12/aa40614-21/aa40614-21.html">https://doi.org/10.1051/0004-6361/202140614</a></p>
-<p>NumPy Developers. (n.d.). <em>numpy.correlate</em>. NumPy v1.26 Manual. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.correlate.html">https://numpy.org/doc/stable/reference/generated/numpy.correlate.html</a></p>
 <p>Ranjan, S., Charbonneau, D., Désert, J.-M., Madhusudhan, N., Deming, D., Wilkins, A., &amp; Mandell, A. M. (2014). <em>Atmospheric characterization of five hot Jupiters with the Wide Field Camera 3 on the Hubble Space Telescope</em>. The Astrophysical Journal, 785(2), 148. <a class="reference external" href="https://doi.org/10.1088/0004-637X/785/2/148">https://doi.org/10.1088/0004-637X/785/2/148</a></p>
+<p>Rothman, L. S., Gordon, I. E., Barber, R. J., Dothe, H., Gamache, R. R., Goldman, A., Perevalov, V., Tashkun, S. A., &amp; Tennyson, J. (2010). HITEMP, the high-temperature molecular spectroscopic database. <em>Journal of Quantitative Spectroscopy and Radiative Transfer, 111</em>, 2139–2150. <a class="reference external" href="https://doi.org/10.1016/j.jqsrt.2010.05.001">https://doi.org/10.1016/j.jqsrt.2010.05.001</a></p>
 <p>SciPy Developers. (n.d.). <em>scipy.signal.correlate</em>. SciPy v1.16.0 Reference Guide. <a class="reference external" href="https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.signal.correlate.html">https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.signal.correlate.html</a></p>
 <p>Snellen, I. A. G., de Kok, R. J., de Mooij, E. J. W., &amp; Albrecht, S. (2010). <em>The orbital motion, absolute mass and high-altitude winds of exoplanet HD 209458b</em>. Nature, 465(7301), 1049–1051. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2010Natur.465.1049S/abstract">https://ui.adsabs.harvard.edu/abs/2010Natur.465.1049S/abstract</a></p>
+<p>Virtanen, P., Gommers, R., Oliphant, T. E., Haberland, M., Reddy, T., Cournapeau, D., Burovski, E., Peterson, P., Weckesser, W., Bright, J., van der Walt, S. J., Brett, M., Wilson, J., Millman, K. J., Mayorov, N., Nelson, A. R. J., Jones, E., Kern, R., Larson, E., Carey, C. J., Polat, İ., Feng, Y., Moore, E. W., VanderPlas, J., Laxalde, D., Perktold, J., Cimrman, R., Henriksen, I., Quintero, E. A., Harris, C. R., Archibald, A. M., Ribeiro, A. H., Pedregosa, F., van Mulbregt, P., &amp; SciPy 1.0 Contributors. (2020). SciPy 1.0: Fundamental algorithms for scientific computing in Python. <em>Nature Methods, 17</em>, 261–272. <a class="reference external" href="https://www.nature.com/articles/s41592-019-0686-2">Publisher link</a></p>
 <p>Wei, P.-S., Hsieh, Y.-C., Chiu, H.-H., Yen, D.-L., Lee, C., Tsai, Y.-C., &amp; Ting, T.-C. (2018). <em>Absorption coefficient of carbon dioxide across atmospheric troposphere layer</em>. Scientific Reports, 8, 17659. <a class="reference external" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6174548/">https://pmc.ncbi.nlm.nih.gov/articles/PMC6174548/</a></p>
 </section>
 <section id="about-this-notebook">
